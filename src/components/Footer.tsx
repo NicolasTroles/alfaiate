@@ -56,7 +56,7 @@ export function Footer() {
           <p>
             Desenvolvido por Nicolas Troles —{' '}
             <a
-              href="https://wa.me/5541999447746"
+              href={`https://wa.me/5541999447746?text=${encodeURIComponent('Olá! Vi seu contato no rodapé do site da Activa Eletrônica.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-ink"

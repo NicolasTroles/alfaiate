@@ -18,7 +18,8 @@ export const site = {
   phone: '(41) 98471-6066',
   phoneLink: '5541984716066',
   whatsapp: '5541984716066',
-  whatsappMessage: 'Olá! Vim pelo site e preciso de um orçamento para o reparo do meu equipamento.',
+  whatsappMessage:
+    'Olá! Vim pelo site da Activa Eletrônica e preciso de um orçamento para o reparo do meu equipamento.',
 
   address: {
     street: 'Rua Coronel José Carvalho de Oliveira, 449',
@@ -58,13 +59,17 @@ export const site = {
  * those are now named explicitly under "Outros equipamentos eletrônicos"
  * instead of staying purely generic.
  *
- * The rest of the "Outros equipamentos eletrônicos" examples (secadores de
- * cabelo, liquidificadores, ferros de passar, cafeteiras, ventiladores) are
- * SEO-driven additions for the 2026-09-05 keyword pass — not individually
- * confirmed by the client, but safe because the category stays "avaliamos
- * caso a caso" rather than a firm promise. Deliberately excludes lava-louças:
- * that's outside a small electronics bench's usual scope (closer to linha
- * branca), so it stays out until the client confirms he actually takes them.
+ * The extra "Outros equipamentos eletrônicos" examples (secador de cabelo in
+ * the card copy; liquidificadores, ferros de passar, cafeteiras and
+ * ventiladores in the fuller `faqs` answer below) are SEO-driven additions
+ * for the 2026-09-05 keyword pass — not individually confirmed by the
+ * client, but safe because the category stays "avaliamos caso a caso" rather
+ * than a firm promise. The full list lives in the FAQ answer rather than
+ * this card's description so the card stays roughly the same length as its
+ * siblings (a long description here made this card visibly taller than the
+ * other three in the grid). Deliberately excludes lava-louças: that's
+ * outside a small electronics bench's usual scope (closer to linha branca),
+ * so it stays out until the client confirms he actually takes them.
  */
 // Real photos, one per card: public/servicos1.png (TV opened for repair),
 // public/servicos2.png (circuit board close-up), public/microondas.png,
@@ -101,7 +106,7 @@ export const services: Service[] = [
     icon: 'search' as const,
     title: 'Outros equipamentos eletrônicos',
     description:
-      'Fornos elétricos, air fryers, secadores de cabelo, liquidificadores, ferros de passar, cafeteiras, ventiladores e outros equipamentos fora da lista? Avaliamos caso a caso antes de qualquer resposta.',
+      'Fornos elétricos, air fryers, secadores de cabelo e outros equipamentos fora da lista? Avaliamos caso a caso antes de qualquer resposta.',
     image: '/outros.png',
   },
 ];
@@ -117,7 +122,7 @@ export const faqs = [
   {
     question: 'Quais equipamentos a Activa Eletrônica conserta?',
     answer:
-      'Televisores de todos os tipos (plasma, LED e LCD), placas e componentes eletrônicos, micro-ondas, fornos elétricos, air fryers e outros equipamentos eletrônicos avaliados caso a caso.',
+      'Televisores de todos os tipos (plasma, LED e LCD), placas e componentes eletrônicos, micro-ondas, fornos elétricos, air fryers, secadores de cabelo, liquidificadores, ferros de passar, cafeteiras, ventiladores e outros equipamentos eletrônicos avaliados caso a caso.',
   },
   {
     question: 'A Activa conserta computadores ou notebooks?',

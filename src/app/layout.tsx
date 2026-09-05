@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo, Manrope } from 'next/font/google';
-import { mapsUrl, services, site } from '@/config/site.config';
+import { faqs, mapsUrl, services, site } from '@/config/site.config';
 import './globals.css';
 
 // display: 'swap' avoids invisible text while the font loads.
@@ -28,12 +28,15 @@ export const metadata: Metadata = {
   keywords: [
     'assistência técnica em Curitiba',
     'assistência técnica eletrônica',
+    'assistência técnica eletrodomésticos Curitiba',
     'conserto de eletrônicos',
-    'conserto de TV',
+    'conserto de TV em Curitiba',
+    'conserto de TV plasma LED LCD',
     'conserto de micro-ondas',
+    'conserto de forno elétrico',
+    'conserto de air fryer',
     'manutenção eletrônica',
     'reparo de placas eletrônicas',
-    'manutenção de computadores',
   ],
   alternates: { canonical: site.seo.url },
   icons: {
@@ -104,6 +107,20 @@ const jsonLd = {
   },
 };
 
+/** Mirrors the visible FAQ section (Sections.tsx) — same `faqs` source, so copy and markup can't drift. */
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${sans.variable} ${display.variable}`}>
@@ -111,6 +128,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
         <a
           href="#content"

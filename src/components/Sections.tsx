@@ -1,7 +1,7 @@
 'use client';
 
-import { CircuitBoard, Laptop, Microwave, PackageSearch, Plug, Tv } from 'lucide-react';
-import { services } from '@/config/site.config';
+import { ChevronDown, CircuitBoard, Microwave, PackageSearch, Plug, Tv } from 'lucide-react';
+import { faqs, services } from '@/config/site.config';
 import { Photo } from './Photo';
 import { Reveal } from './Reveal';
 
@@ -9,7 +9,6 @@ const SERVICE_ICONS = {
   tv: Tv,
   circuit: CircuitBoard,
   microwave: Microwave,
-  computer: Laptop,
   plug: Plug,
   search: PackageSearch,
 } as const;
@@ -55,16 +54,14 @@ export function SectionHeading({
 }
 
 const SERVICE_PROMPTS: Record<(typeof services)[number]['icon'], string> = {
-  tv: "Editorial product photograph of the back panel of a flat-screen television opened for repair, resting on a workbench, exposing the internal circuit boards and connectors. A technician's hand holds a screwdriver near one of the boards. Neutral studio lighting, deep petrol-blue (#0B2B3A) and graphite tones with a single amber-yellow (#F4B41A) accent (a tool handle or indicator light), photorealistic, shallow depth of field, no text, no logos, no face visible.",
+  tv: "Editorial product photograph of three flat-screen televisions of different types — a plasma TV, an LED TV, and an LCD TV — arranged side by side facing forward on a clean workbench or shelf in an electronics repair shop, screens off, showing their distinct front profiles. Neutral studio lighting, deep petrol-blue (#0B2B3A) and graphite tones with a single amber-yellow (#F4B41A) accent (a tool or indicator light nearby), photorealistic, shallow depth of field, no text, no logos, no visible face.",
   circuit:
     "Macro editorial photograph of a green printed circuit board held under focused work light, showing soldered components, resistors and a soldering iron tip mid-repair with a thin curl of smoke. Extreme close-up, shallow depth of field, precise and technical mood, deep petrol-blue and graphite palette with one amber-yellow accent (solder wire spool or LED), photorealistic, no text, no logos.",
   microwave:
     "Editorial photograph of a microwave oven with its outer casing removed, placed on a repair workbench, revealing the internal components and wiring. A multimeter with probes rests nearby, screen lit. Warm directional studio lighting, deep petrol-blue and metal tones, one amber-yellow accent, photorealistic, shallow depth of field, no text, no logos, no visible face.",
-  computer:
-    "Editorial photograph of an open desktop computer case on a workbench, internal components and cables visible, a technician's hands working with an anti-static wrist strap and a small screwdriver near the motherboard. Focused studio lighting, deep petrol-blue and graphite palette with one amber-yellow accent, photorealistic, shallow depth of field, no text, no logos, no visible face.",
   plug: "Macro editorial photograph of an electronic power supply unit opened for repair, showing capacitors, transformer and wiring, with a multimeter probe touching a component and displaying a reading. Precise studio lighting, deep petrol-blue and metal tones, one amber-yellow accent, photorealistic, shallow depth of field, no text, no logos.",
   search:
-    "Editorial photograph of a technician's workbench holding several different small electronic devices and modules awaiting evaluation, organized neatly with labeled tags, tools and a multimeter nearby. Neutral studio lighting, deep petrol-blue and graphite tones with one amber-yellow accent, photorealistic, shallow depth of field, no text, no logos, no visible face.",
+    "Editorial photograph of a technician's workbench holding an electric oven and an airfryer awaiting evaluation, alongside a couple of other small unidentified electronic devices, organized neatly with labeled tags, tools and a multimeter nearby. Neutral studio lighting, deep petrol-blue and graphite tones with one amber-yellow accent, photorealistic, shallow depth of field, no text, no logos, no visible face.",
 };
 
 /** What the client repairs — photography-led cards, categories confirmed by the client, evaluated case by case. */
@@ -82,7 +79,7 @@ export function Services() {
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, i) => {
             const Icon = SERVICE_ICONS[service.icon];
             return (
@@ -106,6 +103,49 @@ export function Services() {
               </Reveal>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Visible FAQ content — native <details>/<summary> accordion (accessible,
+ * no JS needed for the disclosure itself). Every answer is sourced from
+ * `faqs` in site.config.ts, which also feeds the FAQPage JSON-LD in
+ * layout.tsx, so the visible text and the structured data never drift apart.
+ */
+export function FAQ() {
+  return (
+    <section id="faq" className="bg-floor py-24 sm:py-32">
+      <div className="mx-auto max-w-3xl px-5 sm:px-8">
+        <Reveal>
+          <SectionHeading
+            eyebrow="Dúvidas frequentes"
+            title="Perguntas sobre o conserto do seu equipamento"
+            tone="light"
+            center
+          />
+        </Reveal>
+
+        <div className="mt-14 divide-y divide-floorLine border-t border-floorLine">
+          {faqs.map((faq, i) => (
+            <Reveal key={faq.question} delay={i * 40}>
+              <details className="group py-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-[16px] font-bold text-ink marker:content-none">
+                  {faq.question}
+                  <ChevronDown
+                    className="h-5 w-5 shrink-0 text-safetyDeep transition-transform duration-200 group-open:rotate-180"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </summary>
+                <p className="mt-4 max-w-prose text-[15px] leading-relaxed text-inkSoft">
+                  {faq.answer}
+                </p>
+              </details>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

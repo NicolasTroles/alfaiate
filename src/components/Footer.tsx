@@ -3,6 +3,7 @@ import { mapsUrl, site, whatsappUrl } from '@/config/site.config';
 
 const LINKS = [
   { href: '#services', label: 'Serviços' },
+  { href: '#faq', label: 'Dúvidas' },
   { href: '#contato', label: 'Contato' },
   { href: mapsUrl, label: 'Google', external: true },
   { href: whatsappUrl, label: 'WhatsApp', external: true },
@@ -49,6 +50,20 @@ export function Footer() {
           <a href={`tel:${site.phoneLink}`} className="transition-colors hover:text-ink">
             {site.phone}
           </a>
+        </div>
+
+        <div className="mt-6 text-center text-[11px] text-inkSoft/70">
+          <p>
+            Desenvolvido por Nicolas Troles —{' '}
+            <a
+              href="https://wa.me/5541999447746"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-ink"
+            >
+              Entrar em contato
+            </a>
+          </p>
         </div>
       </div>
     </footer>

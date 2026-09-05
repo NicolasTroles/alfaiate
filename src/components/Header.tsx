@@ -7,20 +7,23 @@ import { site, whatsappUrl } from '@/config/site.config';
 
 const LINKS = [
   { href: '#services', label: 'Serviços' },
+  { href: '#faq', label: 'Dúvidas' },
   { href: '#contato', label: 'Contato' },
 ];
 
 /**
- * Frosted glass, always on: a translucent wash of the page's own light
- * background (not a flat opaque bar), blurred so whatever sits behind it —
- * the dark hero photo, or a lighter section further down — softens into a
- * tint rather than showing through sharp. Never fully transparent: the logo
- * is petrol-on-light and the hero is a dark full-bleed photo
- * (public/reparo.png), so the glass needs enough of its own fill to keep
- * text/logo legible over any background.
+ * Transparent over the hero, solid once scrolled: the header starts with no
+ * fill at all so the dark full-bleed hero photo (public/reparo.png) shows
+ * straight through, with the nav text/logo flipped to light so they stay
+ * legible against it. Past a small scroll threshold it switches to the
+ * frosted light bar (and the logo/text flip back to their normal petrol
+ * colors) since every section below the hero is light. `logo.png` itself is
+ * petrol+amber on transparent, so the "light" logo is the same file forced
+ * white via a CSS filter rather than a second exported asset.
  */
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -29,8 +32,23 @@ export function Header() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const solid = scrolled || open;
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-floorLine/60 bg-floor/60 backdrop-blur-md">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+        solid
+          ? 'border-floorLine/60 bg-floor/60 backdrop-blur-md'
+          : 'border-transparent bg-transparent'
+      }`}
+    >
       <nav
         className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6 px-5 py-2 sm:px-8"
         aria-label="Navegação principal"
@@ -42,7 +60,9 @@ export function Header() {
             width={2172}
             height={724}
             priority
-            className="h-10 w-auto object-contain sm:h-12"
+            className={`h-10 w-auto object-contain transition-[filter] duration-300 sm:h-12 ${
+              solid ? '' : 'brightness-0 invert'
+            }`}
           />
         </a>
 
@@ -51,7 +71,9 @@ export function Header() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="label-caps text-[11px] text-ink transition-colors duration-200 hover:text-safetyDeep"
+                className={`label-caps text-[11px] transition-colors duration-200 ${
+                  solid ? 'text-ink hover:text-safetyDeep' : 'text-chalk hover:text-safety'
+                }`}
               >
                 {link.label}
               </a>
@@ -71,7 +93,9 @@ export function Header() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="grid h-11 w-11 place-items-center text-ink lg:hidden"
+          className={`grid h-11 w-11 place-items-center transition-colors duration-200 lg:hidden ${
+            solid ? 'text-ink' : 'text-chalk'
+          }`}
           aria-label={open ? 'Fechar menu' : 'Abrir menu'}
           aria-expanded={open}
         >

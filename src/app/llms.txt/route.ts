@@ -1,4 +1,4 @@
-import { mapsUrl, services, site, whatsappUrl } from '@/config/site.config';
+import { faqs, mapsUrl, services, site, whatsappUrl } from '@/config/site.config';
 
 /**
  * llms.txt — an emerging (not yet officially adopted by any major AI
@@ -20,6 +20,9 @@ export async function GET() {
 
 ## Serviços
 ${services.map((s) => `- ${s.title}: ${s.description}`).join('\n')}
+
+## Perguntas frequentes
+${faqs.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join('\n\n')}
 
 ## Contato
 - WhatsApp: ${whatsappUrl}

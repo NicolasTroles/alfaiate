@@ -11,8 +11,8 @@ import { Photo } from './Photo';
 /**
  * Full-bleed hero: the real workbench photo (public/reparo.png) fills the
  * whole viewport, darkened under a petrol gradient so the type stays
- * legible. The header stays solid/light at all times (see Header.tsx) since
- * the logo is petrol-on-white and would vanish over this dark photo.
+ * legible. The header rides transparent over this section and only turns
+ * solid once scrolled past it (see Header.tsx).
  */
 export function Hero() {
   const background = useParallax<HTMLDivElement>(0.12);

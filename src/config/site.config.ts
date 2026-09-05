@@ -36,10 +36,8 @@ export const site = {
     title: 'Activa Eletrônica | Assistência Técnica em Curitiba',
     description:
       'Assistência técnica em Curitiba: conserto de TV (plasma, LED, LCD), placas eletrônicas, micro-ondas, fornos elétricos e air fryers. Diagnóstico técnico e orçamento pelo WhatsApp.',
-    // Confirmed production domain — Vercel project subdomains are always
-    // *.vercel.app (there's no *.vercel.com equivalent), so that's the
-    // suffix used here even though it was requested as ".com".
-    url: 'https://activaeletronica.vercel.app',
+    // Confirmed production domain.
+    url: 'https://activaeletronica.com.br',
   },
 } as const;
 

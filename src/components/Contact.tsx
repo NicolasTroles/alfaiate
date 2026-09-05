@@ -3,17 +3,19 @@
 import { Clock, MapPin, Phone } from 'lucide-react';
 import { site } from '@/config/site.config';
 import { WhatsAppButton } from './Actions';
-import { RigSilhouette } from './Brand';
 import { Reveal } from './Reveal';
+import { ServiceMap } from './ServiceMap';
 
 /**
  * Contact section.
  *
  * AlfaGeo is a field-service business — the crew travels to the client's
  * site, there's no walk-in office — so this leads with the service area and
- * WhatsApp instead of a street address and map, unlike a storefront
- * business. Swap in a real address block here if the client confirms a
- * public office later.
+ * WhatsApp instead of a street address, unlike a storefront business. The
+ * decorative column shows an interactive coverage map (all four states the
+ * crew actually serves) instead of a literal street-address map, since
+ * there's no single public office to pin. Swap in a real address block here
+ * if the client confirms a public office later.
  */
 export function Contact() {
   return (
@@ -75,15 +77,15 @@ export function Contact() {
                   strokeWidth={1.5}
                   aria-hidden="true"
                 />
-                <div className="w-full max-w-xs">
+                <div className="w-full">
                   <h3 className="text-[10px] uppercase tracking-wide2 text-graphiteSoft">
                     Horário
                   </h3>
                   <dl className="mt-3 space-y-2.5">
                     {site.openingHours.map((h) => (
-                      <div key={h.days} className="flex justify-between gap-6">
-                        <dt className="text-graphiteSoft">{h.days}</dt>
-                        <dd className="tabular-nums text-graphite">{h.hours}</dd>
+                      <div key={h.days} className="flex flex-col gap-0.5 sm:flex-row sm:justify-between sm:gap-6">
+                        <dt className="text-graphiteSoft sm:whitespace-nowrap">{h.days}</dt>
+                        <dd className="tabular-nums text-graphite sm:whitespace-nowrap">{h.hours}</dd>
                       </div>
                     ))}
                   </dl>
@@ -99,11 +101,9 @@ export function Contact() {
           </Reveal>
         </div>
 
-        {/* Decorative column: no confirmed public address to map yet. */}
-        <div className="relative min-h-[20rem] overflow-hidden border-t border-stoneLine bg-ink lg:min-h-full lg:border-l lg:border-t-0">
-          <div className="absolute inset-0 grid place-items-center">
-            <RigSilhouette className="h-64 w-auto text-line" aria-hidden="true" />
-          </div>
+        {/* Decorative column: interactive coverage map instead of a street address. */}
+        <div className="relative min-h-[26rem] overflow-hidden border-t border-stoneLine bg-ink lg:min-h-full lg:border-l lg:border-t-0">
+          <ServiceMap />
         </div>
       </div>
     </section>

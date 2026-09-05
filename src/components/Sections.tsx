@@ -6,13 +6,12 @@ import {
   FileCheck,
   FlaskConical,
   Layers,
-  Quote,
   Ruler,
   TestTube2,
 } from 'lucide-react';
-import { process, services, site, testimonials } from '@/config/site.config';
+import { process, services, site } from '@/config/site.config';
 import { useParallax } from '@/lib/useParallax';
-import { RigSilhouette, SectionDivider } from './Brand';
+import { RigSilhouette } from './Brand';
 import {
   FieldCrewIllustration,
   LandscapeStripIllustration,
@@ -119,7 +118,8 @@ export function About() {
             />
             <div className="mt-10 space-y-6 border-l-2 border-clay/50 pl-7">
               <p className="max-w-prose leading-relaxed text-graphiteSoft">
-                Em {site.city}, {site.state}, a equipe da {site.brandName} opera com equipamento
+                Baseada em {site.city}, {site.state}, a equipe da {site.brandName} atende obras em
+                todo o Paraná, Santa Catarina, Rio Grande do Sul e São Paulo, com equipamento
                 próprio e atendimento direto — do primeiro contato à entrega do laudo assinado.
               </p>
               <p className="max-w-prose leading-relaxed text-graphiteSoft">
@@ -133,20 +133,20 @@ export function About() {
           <Reveal delay={120}>
             <div className="grid grid-cols-2 gap-4">
               <Photo
-                src="/dados1.png"
+                src="/dados1.jpg"
                 guide="Detalhe da equipe operando o amostrador SPT durante a cravação, com o tripé e o cabo de aço em primeiro plano."
                 illustration={<SptOperatorIllustration tone="light" />}
-                alt="Ilustração de um técnico operando o amostrador SPT ao lado do tripé de sondagem"
+                alt="Equipe da AlfaGeo operando o tripé de sondagem SPT no cabo de aço"
                 aspect="tall"
                 tone="light"
                 sizes="(max-width: 1024px) 50vw, 25vw"
                 className="mt-10"
               />
               <Photo
-                src="/dados2.png"
+                src="/dados2.jpg"
                 guide="Amostras de solo (testemunhos) organizadas em caixas, prontas para classificação."
                 illustration={<SoilSamplesIllustration tone="light" />}
-                alt="Ilustração de caixas com amostras de solo organizadas para classificação"
+                alt="Testemunhos de solo organizados em caixas para classificação"
                 aspect="tall"
                 tone="light"
                 sizes="(max-width: 1024px) 50vw, 25vw"
@@ -184,13 +184,28 @@ export function Services() {
                 className={i === 0 ? 'sm:col-span-2 lg:col-span-1' : ''}
               >
                 <article
-                  className={`group h-full border border-stoneLine bg-stoneDeep p-9 transition-all duration-300 hover:-translate-y-1 hover:bg-stone sm:p-11 ${ACCENT_HOVER_BORDER[accent]}`}
+                  className={`group h-full border border-stoneLine bg-stoneDeep transition-all duration-300 hover:-translate-y-1 hover:bg-stone ${ACCENT_HOVER_BORDER[accent]}`}
                 >
-                  <Icon className={`h-6 w-6 ${ACCENT_ICON[accent]}`} strokeWidth={1.5} aria-hidden="true" />
-                  <h3 className="mt-7 font-display text-2xl text-graphite">{service.title}</h3>
-                  <p className="mt-4 max-w-prose leading-relaxed text-graphiteSoft">
-                    {service.description}
-                  </p>
+                  {/* photoSrc is only set on services with a matching photo in
+                      /public already — the rest (see site.config.ts) fall
+                      back to the plain "Foto aqui" guide since Photo has no
+                      illustration to show while the file is missing. */}
+                  <Photo
+                    src={service.photoSrc}
+                    aiPrompt={service.aiPrompt}
+                    alt={service.photoAlt}
+                    guide={service.photoGuide}
+                    aspect="landscape"
+                    tone="light"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="p-9 sm:p-11">
+                    <Icon className={`h-6 w-6 ${ACCENT_ICON[accent]}`} strokeWidth={1.5} aria-hidden="true" />
+                    <h3 className="mt-7 font-display text-2xl text-graphite">{service.title}</h3>
+                    <p className="mt-4 max-w-prose leading-relaxed text-graphiteSoft">
+                      {service.description}
+                    </p>
+                  </div>
                 </article>
               </Reveal>
             );
@@ -219,38 +234,38 @@ export function Gallery() {
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Reveal className="lg:row-span-2">
             <Photo
-              src="/galeria1.png"
+              src="/galeria1.jpg"
               guide="Foto vertical em destaque: equipamento de sondagem montado, tripé completo, em pé no terreno."
               illustration={<RigStandingIllustration />}
-              alt="Ilustração do equipamento de sondagem SPT montado sobre o terreno"
+              alt="Tripé de sondagem SPT montado em campo, sob céu aberto"
               aspect="tall"
               className="h-full"
             />
           </Reveal>
           <Reveal delay={80}>
             <Photo
-              src="/galeria2.png"
+              src="/galeria2.jpg"
               guide="Detalhe do amostrador SPT sendo extraído do solo, com marcas de profundidade visíveis."
               illustration={<SamplerCloseupIllustration />}
-              alt="Ilustração em corte do amostrador SPT mostrando as camadas de solo coletadas"
+              alt="Caixa de testemunhos com etiquetas de profundidade de cada amostra"
               aspect="square"
             />
           </Reveal>
           <Reveal delay={160}>
             <Photo
-              src="/galeria3.png"
+              src="/galeria3.jpg"
               guide="Equipe técnica trabalhando em conjunto durante a sondagem, com equipamentos de segurança."
               illustration={<FieldCrewIllustration />}
-              alt="Ilustração de dois técnicos trabalhando em conjunto ao lado do equipamento de sondagem"
+              alt="Equipe da AlfaGeo trabalhando em conjunto em obra de contenção de talude"
               aspect="square"
             />
           </Reveal>
           <Reveal delay={240}>
             <Photo
-              src="/galeria4.png"
+              src="/galeria4.jpg"
               guide="Equipamento de sondagem sendo transportado ou montado em um veículo utilitário."
               illustration={<TransportIllustration />}
-              alt="Ilustração do equipamento de sondagem carregado em uma caminhonete"
+              alt="Caminhonete da AlfaGeo Sondagens com o equipamento de sondagem na carreta"
               aspect="landscape"
             />
           </Reveal>
@@ -325,42 +340,6 @@ export function Process() {
             ))}
           </ol>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/** Section 6 — LIGHT. Testimonials. */
-export function Testimonials() {
-  return (
-    <section className="border-t border-stoneLine bg-stone py-28 text-graphite sm:py-36">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal>
-          <SectionHeading eyebrow="Clientes" title="Quem já confiou na AlfaGeo." center />
-        </Reveal>
-
-        <div className="mt-16 grid gap-4 md:grid-cols-3">
-          {testimonials.map((item, i) => (
-            <Reveal key={i} delay={i * 90}>
-              <figure className="flex h-full flex-col border border-stoneLine bg-stoneDeep p-9">
-                <Quote className={`h-6 w-6 ${ACCENT_ICON[i % 3]}`} strokeWidth={1.5} aria-hidden="true" />
-                <blockquote className="mt-6 flex-1 font-display text-lg leading-relaxed text-graphite">
-                  {item.quote}
-                </blockquote>
-                <figcaption className="mt-7 border-t border-stoneLine pt-5">
-                  <p className="text-[11px] uppercase tracking-wide2 text-graphite">
-                    {item.author}
-                  </p>
-                  <p className="mt-2 text-sm text-graphiteSoft">{item.context}</p>
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal>
-          <SectionDivider className="mt-20" tone="light" />
-        </Reveal>
       </div>
     </section>
   );

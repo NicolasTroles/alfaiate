@@ -8,7 +8,7 @@ type IconProps = {
   className?: string;
 };
 
-/** Real client logo (public/logo.png) — icon shown next to the Wordmark text. */
+/** Real client logo (public/logo.png, transparent) — icon shown next to the Wordmark text. */
 export function LogoImage({ className }: IconProps) {
   return (
     <img

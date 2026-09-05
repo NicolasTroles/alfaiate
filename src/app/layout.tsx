@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Mono, Inter, Space_Grotesk } from 'next/font/google';
-import { site } from '@/config/site.config';
+import { areaServedStates, services, site } from '@/config/site.config';
 import './globals.css';
 
 // display: 'swap' avoids invisible text while the font loads.
@@ -47,6 +47,11 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: site.seo.title,
+    description: site.seo.description,
+  },
   robots: { index: true, follow: true },
 };
 
@@ -68,15 +73,28 @@ const jsonLd = {
   description: site.seo.description,
   telephone: site.phone,
   url: site.seo.url,
-  areaServed: {
-    '@type': 'City',
-    name: site.city,
-  },
+  image: `${site.seo.url}/logo.png`,
+  // Crew travels the whole South region plus São Paulo, not just the home
+  // city — mirror site.areaServed here, not the office address below.
+  areaServed: areaServedStates.map((name) => ({ '@type': 'State', name })),
   address: {
     '@type': 'PostalAddress',
     addressLocality: site.city,
     addressRegion: site.state,
     addressCountry: 'BR',
+  },
+  ...(site.socialLinks.instagram ? { sameAs: [site.socialLinks.instagram] } : {}),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Serviços de sondagem e investigação geotécnica',
+    itemListElement: services.map((service) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: service.title,
+        description: service.description,
+      },
+    })),
   },
 };
 

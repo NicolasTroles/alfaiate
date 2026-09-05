@@ -42,9 +42,13 @@ export const site = {
     title: 'AlfaGeo Sondagens | Sondagem SPT, Rotativa e Laudo Geotécnico no Sul do Brasil',
     description:
       'AlfaGeo Sondagens executa sondagem SPT, sondagem rotativa, poços de inspeção, ensaio de percolação do solo e laudo geológico-geotécnico no Paraná, Santa Catarina, Rio Grande do Sul e São Paulo. Orçamento pelo WhatsApp.',
-    url: 'https://alfageo.vercel.app', // TODO: confirm final domain
+    url: 'https://www.alfageosondagem.com.br',
   },
 } as const;
+
+// Full state names for the JSON-LD areaServed list, matching site.areaServed
+// above and the sigla keys in serviceRegion below.
+export const areaServedStates = ['Paraná', 'Santa Catarina', 'Rio Grande do Sul', 'São Paulo'];
 
 /**
  * States covered by the map in ServiceMap, keyed by the same two-letter

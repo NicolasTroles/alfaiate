@@ -1,6 +1,10 @@
 import { site } from '@/config/site.config';
 import { FacebookGlyph, InstagramGlyph, LogoImage } from './Brand';
 
+const developerWhatsappUrl = `https://wa.me/5541999447746?text=${encodeURIComponent(
+  'Olá Nicolas! Vi o site da AlfaGeo e queria saber mais sobre criar um site assim.',
+)}`;
+
 export function Footer() {
   const year = new Date().getFullYear();
   const hasSocialLinks = site.socialLinks.instagram || site.socialLinks.facebook;
@@ -46,6 +50,19 @@ export function Footer() {
             © {year} {site.brandFull}
           </p>
           <p>{site.areaServed}</p>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5 text-center text-[12px] text-muted md:justify-start">
+          <p>Desenvolvido por Nicolas Troles</p>
+          <span aria-hidden="true">·</span>
+          <a
+            href={developerWhatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-bone"
+          >
+            Entrar em contato
+          </a>
         </div>
       </div>
     </footer>

@@ -7,11 +7,12 @@
  * brand identity — palette, positioning, the equipment categories — comes
  * from the client's brand brief.
  *
- * STILL UNCONFIRMED, and therefore still absent from the copy: any WhatsApp
- * number (the profile lists only a landline, which cannot receive WhatsApp),
- * price, turnaround time, warranty length, manufacturer authorization, and
- * years in business. Anything not on this list of sources does not appear
- * anywhere on the site.
+ * The client separately confirmed that the landline also answers on WhatsApp
+ * Business — see the note on `whatsapp` below.
+ *
+ * STILL UNCONFIRMED, and therefore absent from the copy: price, turnaround
+ * time, warranty length, manufacturer authorization, and years in business.
+ * Anything not on this list of sources does not appear anywhere on the site.
  */
 
 export const site = {
@@ -32,17 +33,20 @@ export const site = {
   phoneLink: '554130924949',
 
   /**
-   * WhatsApp is NOT configured, on purpose.
+   * Same digits as the landline above — not a copy-paste slip.
    *
-   * The only number the client publishes is the landline above, and a
-   * landline cannot receive WhatsApp — pointing wa.me at 554130924949 would
-   * produce a dead chat for every visitor who taps the main CTA. Until a real
-   * mobile is confirmed, `whatsappUrl` below is null and every contact
-   * control falls back to the phone. Setting this to the E.164 mobile is the
-   * only change needed to switch the whole site back to WhatsApp-first.
+   * WhatsApp Business can be registered on a fixed line (it verifies by voice
+   * call instead of SMS), and the client confirmed this number answers on
+   * WhatsApp. So one number serves two channels, and the contact list names
+   * both while saying they are the same line, rather than looking like a
+   * duplicated field.
+   *
+   * Buttons and links all route through `primaryContact` below, so emptying
+   * this field re-points every control at the phone on its own. Prose that
+   * names WhatsApp by hand does NOT follow automatically — grep for
+   * "WhatsApp" across src/ and sweep the copy too if that ever happens.
    */
-  // TODO: confirm with client — WhatsApp mobile in E.164 form, e.g. '5541999999999'.
-  whatsapp: '',
+  whatsapp: '554130924949',
   whatsappMessage:
     'Olá! Vim pelo site da TV System e gostaria de um orçamento para o conserto do meu aparelho.',
 
@@ -93,7 +97,7 @@ export const site = {
   seo: {
     title: 'TV System | Assistência Técnica em TV e Eletrodomésticos em Curitiba',
     description:
-      'Assistência técnica em Curitiba: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Diagnóstico antes do orçamento, no Água Verde.',
+      'Assistência técnica em Curitiba: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Diagnóstico antes do orçamento e atendimento pelo WhatsApp.',
     // TODO: confirm with client — replace with the real domain after the
     // first deploy, then redeploy so canonical/OG URLs match production.
     url: 'https://tvsystem.com.br',
@@ -195,7 +199,7 @@ export const diagnosticSteps = [
     code: '01',
     title: 'Recepção',
     description:
-      'Você liga descrevendo o defeito ou traz o aparelho até a bancada. Registramos o equipamento, o modelo e o sintoma relatado.',
+      'Você descreve o defeito pelo WhatsApp ou traz o aparelho até a bancada. Registramos o equipamento, o modelo e o sintoma relatado.',
   },
   {
     code: '02',
@@ -266,7 +270,7 @@ export const faqs = [
   {
     question: 'Vocês dão orçamento por telefone?',
     answer:
-      'Só depois de olhar o aparelho. Sintomas parecidos podem ter causas completamente diferentes, e um valor dito antes do diagnóstico seria um chute. Por telefone conseguimos entender o problema e orientar o próximo passo.',
+      'Só depois de olhar o aparelho. Sintomas parecidos podem ter causas completamente diferentes, e um valor dito antes do diagnóstico seria um chute. Pelo WhatsApp conseguimos entender o problema e orientar o próximo passo.',
   },
   {
     question: 'O conserto começa antes de eu aprovar?',
@@ -281,7 +285,7 @@ export const faqs = [
   {
     question: 'Como solicito um orçamento?',
     answer:
-      'Ligue para (41) 3092-4949 com o modelo do aparelho e uma descrição do defeito em mãos, ou traga o equipamento até a loja no Água Verde. O orçamento é fechado depois do diagnóstico.',
+      'Chame no WhatsApp (41) 3092-4949 com o modelo do aparelho e uma descrição do defeito — fotos ou um vídeo curto do problema ajudam bastante no diagnóstico inicial. O mesmo número atende por ligação, e você também pode trazer o aparelho até a loja no Água Verde.',
   },
   {
     question: 'Onde fica a TV System?',

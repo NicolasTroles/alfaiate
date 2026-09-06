@@ -32,7 +32,7 @@ export function Faq() {
               Perguntas que a gente ouve todo dia.
             </h2>
             <p className="mt-5 max-w-prose leading-relaxed text-inkMute">
-              Se a sua não estiver aqui, é só perguntar direto para a equipe.
+              Se a sua não estiver aqui, é só perguntar direto no WhatsApp.
             </p>
             <div className="mt-8">
               <Button
@@ -80,9 +80,13 @@ export function Faq() {
  * which is a worse failure than an honest empty state.
  */
 export function Contact() {
-  // WhatsApp is listed only when a mobile is actually configured — see the
-  // note on site.whatsapp. Advertising a channel that does not answer is
-  // worse than offering one fewer.
+  // WhatsApp is listed only when a number is configured — see the note on
+  // site.whatsapp. Advertising a channel that does not answer is worse than
+  // offering one fewer.
+  //
+  // Here WhatsApp and Telefone show the same digits, because they are the
+  // same line. The descriptions say so outright: a visitor who sees one
+  // number printed twice with no explanation reads it as a bug.
   const channels = [
     ...(primaryContact.channel === 'whatsapp'
       ? [
@@ -90,7 +94,8 @@ export function Contact() {
             icon: MessageSquare,
             label: 'WhatsApp',
             value: site.phone,
-            description: 'O canal mais rápido. Mande o modelo e o defeito.',
+            description:
+              'O canal mais rápido. Mande o modelo, o defeito e, se der, uma foto ou vídeo.',
             href: primaryContact.href,
             external: true,
           },
@@ -100,7 +105,8 @@ export function Contact() {
       icon: Phone,
       label: 'Telefone',
       value: site.phone,
-      description: 'Falar direto com a bancada durante o horário de atendimento.',
+      description:
+        'O mesmo número atende por ligação, se você preferir falar com a bancada.',
       href: phoneUrl,
       external: false,
     },
@@ -131,8 +137,9 @@ export function Contact() {
             Traga o defeito. A gente encontra a causa.
           </h2>
           <p className="mt-6 max-w-prose text-lg leading-relaxed text-ink">
-            Ligue ou traga o aparelho até a loja, no Água Verde. Ter em mãos a marca, o modelo e
-            o que ele faz (ou deixou de fazer) já adianta boa parte do diagnóstico.
+            Descreva o que está acontecendo com o aparelho — marca, modelo e o que ele faz (ou
+            deixou de fazer). Fotos e um vídeo curto do problema ajudam bastante no diagnóstico
+            inicial. Se preferir, ligue ou traga o equipamento até a loja, no Água Verde.
           </p>
 
           <ul className="mt-10 space-y-px overflow-hidden rounded-card border border-line bg-line">

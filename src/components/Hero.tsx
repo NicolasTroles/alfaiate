@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ArrowRight, MessageSquare, Star } from 'lucide-react';
+import { ArrowRight, Phone, Star } from 'lucide-react';
 import Button from '@/components/Button';
 import { mapsUrl, phoneUrl, primaryContact, site, tickerItems } from '@/config/site.config';
 
@@ -70,9 +70,9 @@ export default function Hero() {
               <Button
                 href={phoneUrl}
                 variant="outlineDark"
-                icon={<MessageSquare className="h-4 w-4" strokeWidth={2.2} />}
+                icon={<Phone className="h-4 w-4" strokeWidth={2.2} />}
               >
-                Falar com um técnico
+                Ligar {site.phone}
               </Button>
             </div>
 
@@ -121,7 +121,7 @@ export default function Hero() {
               <dl className="mt-5 space-y-4">
                 {[
                   { term: 'Equipamento', value: 'o seu aparelho' },
-                  { term: 'Sintoma', value: 'você descreve' },
+                  { term: 'Sintoma', value: 'descreva no WhatsApp' },
                   { term: 'Etapa', value: 'aguardando entrada' },
                 ].map((row) => (
                   <div key={row.term} className="flex items-baseline gap-3">
@@ -143,7 +143,7 @@ export default function Hero() {
                   className="h-2 w-2 animate-blink-dot rounded-full bg-amber"
                 />
                 <p className="text-[13px] font-medium text-chalk">
-                  Com o modelo e o defeito em mãos, a gente já orienta o próximo passo.
+                  Mande o modelo e o defeito. A gente responde com o próximo passo.
                 </p>
               </div>
             </div>

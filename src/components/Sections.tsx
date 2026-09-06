@@ -170,8 +170,8 @@ export function Services() {
           </h2>
           <p className="max-w-prose leading-relaxed text-inkMute lg:col-span-6 lg:pt-2">
             Cada categoria abaixo lista os sintomas mais comuns que chegam aqui. Se o seu defeito
-            não estiver na lista, ele provavelmente ainda cabe — fale com a gente e avaliamos o
-            seu caso.
+            não estiver na lista, ele provavelmente ainda cabe — descreva no WhatsApp e a gente
+            avalia.
           </p>
         </div>
 

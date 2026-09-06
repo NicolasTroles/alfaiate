@@ -135,9 +135,10 @@ export const site = {
     title: 'TV System | Assistência Técnica em TV e Eletrodomésticos em Curitiba',
     description:
       'Assistência técnica em Curitiba há quase 14 anos: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Loja no Água Verde, orçamento pelo WhatsApp.',
-    // TODO: confirm with client — replace with the real domain after the
-    // first deploy, then redeploy so canonical/OG URLs match production.
-    url: 'https://tvsystem.com.br',
+    // Domínio de produção atual. Canonical, OG, robots e sitemap derivam
+    // daqui — se o cliente comprar um domínio próprio, basta trocar esta
+    // linha e redeployar para tudo acompanhar.
+    url: 'https://tvsystem.vercel.app',
   },
 } as const;
 

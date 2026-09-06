@@ -36,7 +36,9 @@ export const metadata: Metadata = {
   title: site.seo.title,
   description: site.seo.description,
   keywords: [
-    'assistência técnica de TV',
+    'assistência técnica em Curitiba',
+    'assistência técnica de TV Curitiba',
+    'conserto de TV em Curitiba',
     'conserto de TV LED',
     'conserto de TV LCD',
     'conserto de Smart TV',
@@ -46,6 +48,7 @@ export const metadata: Metadata = {
     'conserto de lava-louças',
     'assistência técnica de eletrodomésticos',
     'reparo de placa eletrônica',
+    'assistência técnica Água Verde',
     'TV System',
   ],
   authors: [{ name: site.brandFull }],
@@ -80,14 +83,18 @@ export const viewport: Viewport = {
 /**
  * Structured data.
  *
- * Everything here is generated from site.config.ts, and the fields that are
- * still placeholders are omitted rather than published: telephone and
- * postal address only appear once `site.addressConfirmed` is true. Emitting
- * a fabricated address into schema.org markup would put wrong data into
- * Google's index, which is far harder to walk back than an empty field.
+ * Everything here is generated from site.config.ts, and anything not yet
+ * confirmed is omitted rather than published: telephone and postal address
+ * only appear once `site.addressConfirmed` is true. Emitting a fabricated
+ * address into schema.org markup would put wrong data into Google's index,
+ * which is far harder to walk back than an empty field.
  *
- * There is no aggregateRating, no priceRange and no openingHours claim beyond
- * what the client confirms — none of it has been supplied.
+ * Deliberately absent even though the data exists: aggregateRating. The 4,5
+ * comes from the company's own Google profile, and Google's structured-data
+ * policy treats a site marking up its own rating as self-serving — the safe
+ * move is to show it on the page with attribution (which the hero does) and
+ * keep it out of the markup. Also absent: priceRange, turnaround time and
+ * warranty, none of which the client has confirmed.
  */
 function buildJsonLd() {
   const business: Record<string, unknown> = {

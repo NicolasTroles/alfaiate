@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ArrowRight, Menu, Phone, X } from 'lucide-react';
 import Brand from '@/components/Brand';
 import Button from '@/components/Button';
-import { navLinks, phoneUrl, site, whatsappUrl } from '@/config/site.config';
+import { navLinks, phoneUrl, primaryContact, site } from '@/config/site.config';
 
 /**
  * Two stacked bars, borrowed from the on-screen status line of a service
@@ -102,12 +102,12 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             <Button
-              href={whatsappUrl}
-              external
+              href={primaryContact.href}
+              external={primaryContact.external}
               icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
               className="hidden sm:inline-flex"
             >
-              Solicitar orçamento
+              {primaryContact.label}
             </Button>
             <button
               type="button"
@@ -162,12 +162,12 @@ export default function Header() {
 
           <div className="space-y-3 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6">
             <Button
-              href={whatsappUrl}
-              external
+              href={primaryContact.href}
+              external={primaryContact.external}
               icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
               className="w-full"
             >
-              Solicitar orçamento
+              {primaryContact.label}
             </Button>
             <Button href={phoneUrl} variant="outlineDark" className="w-full">
               Ligar {site.phone}

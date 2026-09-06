@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useCallback, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import Button from '@/components/Button';
-import { diagnosticSteps, whatsappUrl } from '@/config/site.config';
+import { diagnosticSteps, primaryContact } from '@/config/site.config';
 
 const SignalScene = dynamic(() => import('@/components/SignalScene'), { ssr: false });
 
@@ -148,8 +148,8 @@ export default function DiagnosticSection() {
                 {index === diagnosticSteps.length - 1 ? (
                   <div className="mt-8">
                     <Button
-                      href={whatsappUrl}
-                      external
+                      href={primaryContact.href}
+                      external={primaryContact.external}
                       icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
                     >
                       Começar pela etapa 01

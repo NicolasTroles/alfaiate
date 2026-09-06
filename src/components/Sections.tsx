@@ -15,7 +15,7 @@ import {
 import Button from '@/components/Button';
 import Photo from '@/components/Photo';
 import Reveal from '@/components/Reveal';
-import { differentials, services, site, whatsappUrl } from '@/config/site.config';
+import { differentials, primaryContact, services, site } from '@/config/site.config';
 
 /**
  * Every section on the white part of the page. They share one structural
@@ -74,7 +74,8 @@ export function Positioning() {
           <p className="mt-7 max-w-prose text-lg leading-relaxed text-ink">
             A {site.brandFull} existe para consertar o aparelho que você já tem. Ninguém aqui
             trabalha vendendo televisor novo — o trabalho é abrir, testar, encontrar a causa do
-            defeito e devolver o equipamento funcionando.
+            defeito e devolver o equipamento funcionando. A bancada fica no Água Verde, em{' '}
+            {site.city}.
           </p>
           <p className="mt-4 max-w-prose leading-relaxed text-inkMute">
             É por isso que a primeira coisa que fazemos é diagnosticar, e a segunda é te contar
@@ -84,8 +85,8 @@ export function Positioning() {
 
           <div className="mt-9">
             <Button
-              href={whatsappUrl}
-              external
+              href={primaryContact.href}
+              external={primaryContact.external}
               variant="outlineLight"
               icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
             >
@@ -169,8 +170,8 @@ export function Services() {
           </h2>
           <p className="max-w-prose leading-relaxed text-inkMute lg:col-span-6 lg:pt-2">
             Cada categoria abaixo lista os sintomas mais comuns que chegam aqui. Se o seu defeito
-            não estiver na lista, ele provavelmente ainda cabe — descreva no WhatsApp e a gente
-            avalia.
+            não estiver na lista, ele provavelmente ainda cabe — fale com a gente e avaliamos o
+            seu caso.
           </p>
         </div>
 
@@ -255,8 +256,8 @@ export function Services() {
                   {featured ? (
                     <div className="relative mt-auto pt-8">
                       <Button
-                        href={whatsappUrl}
-                        external
+                        href={primaryContact.href}
+                        external={primaryContact.external}
                         icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
                       >
                         Orçamento para minha TV

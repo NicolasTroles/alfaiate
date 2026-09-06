@@ -2,17 +2,16 @@
  * Single source of truth for the site. Business data is changed here, never
  * inside a component.
  *
- * IMPORTANT — nothing in this file has been confirmed by the client yet. The
- * brief that started this project covered the brand identity (name, palette,
- * positioning, the equipment categories) and nothing else: no phone number,
- * no address, no opening hours, no reviews, no warranty terms, no years in
- * business. Every such field below is an obvious placeholder marked with a
- * TODO, deliberately fake rather than plausibly invented, so it can never be
- * mistaken for real data and published by accident.
+ * SOURCES. Name, address, landline, opening hours and the Google rating all
+ * come from the company's Google Business profile (read 2026-09-06). The
+ * brand identity — palette, positioning, the equipment categories — comes
+ * from the client's brand brief.
  *
- * The copy that reads from this file was written to make no unconfirmed
- * promise: no price, no turnaround time, no warranty length, no
- * manufacturer authorization, no rating.
+ * STILL UNCONFIRMED, and therefore still absent from the copy: any WhatsApp
+ * number (the profile lists only a landline, which cannot receive WhatsApp),
+ * price, turnaround time, warranty length, manufacturer authorization, and
+ * years in business. Anything not on this list of sources does not appear
+ * anywhere on the site.
  */
 
 export const site = {
@@ -22,56 +21,79 @@ export const site = {
   // not a store that sells televisions.
   tagline: 'Assistência técnica especializada em TVs, micro-ondas e eletrodomésticos.',
 
-  // TODO: confirm with client — city and state drive the local SEO copy,
-  // the JSON-LD areaServed and the map link.
-  city: 'Sua Cidade',
-  state: 'UF',
+  // Confirmed: the Google profile categorises the business as a television
+  // repair service in Curitiba, Paraná.
+  city: 'Curitiba',
+  state: 'PR',
 
-  // TODO: confirm with client — placeholder digits on purpose. `phoneLink`
-  // and `whatsapp` are the E.164 form (55 + DDD + number) used by tel: and
-  // wa.me links.
-  phone: '(00) 00000-0000',
-  phoneLink: '5500000000000',
-  whatsapp: '5500000000000',
+  // Confirmed landline. `phoneLink` is the E.164 form (55 + DDD + number)
+  // used by the tel: link.
+  phone: '(41) 3092-4949',
+  phoneLink: '554130924949',
+
+  /**
+   * WhatsApp is NOT configured, on purpose.
+   *
+   * The only number the client publishes is the landline above, and a
+   * landline cannot receive WhatsApp — pointing wa.me at 554130924949 would
+   * produce a dead chat for every visitor who taps the main CTA. Until a real
+   * mobile is confirmed, `whatsappUrl` below is null and every contact
+   * control falls back to the phone. Setting this to the E.164 mobile is the
+   * only change needed to switch the whole site back to WhatsApp-first.
+   */
+  // TODO: confirm with client — WhatsApp mobile in E.164 form, e.g. '5541999999999'.
+  whatsapp: '',
   whatsappMessage:
     'Olá! Vim pelo site da TV System e gostaria de um orçamento para o conserto do meu aparelho.',
 
   /**
-   * Flips to true once the real address is confirmed. While it is false the
-   * contact section renders a placeholder panel instead of a Google Maps
-   * embed — an embed built from a placeholder query would show some other
-   * business's pin, which is worse than showing nothing.
+   * True once the address is verified — it gates the Google Maps embed and
+   * the postal address in the JSON-LD. Confirmed against the Google Business
+   * profile.
    */
-  addressConfirmed: false,
+  addressConfirmed: true,
 
-  // TODO: confirm with client — full street address.
   address: {
-    street: 'Rua Exemplo, 000',
-    district: 'Bairro',
-    city: 'Sua Cidade',
-    state: 'UF',
-    zip: '00000-000',
-    mapsQuery: 'TV System Assistência Técnica',
+    street: 'R. Palmeiras, 273',
+    district: 'Água Verde',
+    city: 'Curitiba',
+    state: 'PR',
+    zip: '80620-110',
+    mapsQuery: 'TV System Assistência Técnica, R. Palmeiras, 273 - Água Verde, Curitiba - PR, 80620-110',
   },
 
-  // TODO: confirm with client — opening hours are shown in the header status
-  // strip, the contact block and the JSON-LD.
-  openingHours: 'Segunda a sexta, 08h às 18h · Sábado, 08h às 12h',
+  /**
+   * Confirmed opening hours. Sunday is closed and is simply omitted from the
+   * schema rather than published as a zero-length window.
+   */
+  openingHours: 'Segunda a sexta, 09h às 18h · Sábado, 09h às 12h',
   openingHoursSchema: [
-    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:00' },
-    { days: ['Saturday'], opens: '08:00', closes: '12:00' },
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' },
+    { days: ['Saturday'], opens: '09:00', closes: '12:00' },
   ],
 
-  // TODO: confirm with client — remove any channel the client does not use.
+  /**
+   * Google rating, confirmed on the profile. Shown on the page with explicit
+   * attribution to Google, and deliberately NOT emitted as schema.org
+   * aggregateRating: Google's structured-data policy treats a business
+   * marking up its own rating as self-serving, and re-publishing Google's own
+   * rating back to Google as markup risks the whole block being ignored. The
+   * count is always printed next to the value — a bare "4,5" says much less
+   * than "4,5 out of 125".
+   */
+  googleRating: '4,5',
+  googleReviewCount: 125,
+
+  // TODO: confirm with client — no social profiles were listed on Google.
   socialLinks: {
     instagram: '',
     facebook: '',
   },
 
   seo: {
-    title: 'TV System | Assistência Técnica em TV, Micro-ondas e Eletrodomésticos',
+    title: 'TV System | Assistência Técnica em TV e Eletrodomésticos em Curitiba',
     description:
-      'Assistência técnica especializada no conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Diagnóstico técnico e orçamento pelo WhatsApp.',
+      'Assistência técnica em Curitiba: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Diagnóstico antes do orçamento, no Água Verde.',
     // TODO: confirm with client — replace with the real domain after the
     // first deploy, then redeploy so canonical/OG URLs match production.
     url: 'https://tvsystem.com.br',
@@ -173,7 +195,7 @@ export const diagnosticSteps = [
     code: '01',
     title: 'Recepção',
     description:
-      'Você descreve o defeito pelo WhatsApp ou traz o aparelho até a bancada. Registramos o equipamento, o modelo e o sintoma relatado.',
+      'Você liga descrevendo o defeito ou traz o aparelho até a bancada. Registramos o equipamento, o modelo e o sintoma relatado.',
   },
   {
     code: '02',
@@ -244,7 +266,7 @@ export const faqs = [
   {
     question: 'Vocês dão orçamento por telefone?',
     answer:
-      'Só depois de olhar o aparelho. Sintomas parecidos podem ter causas completamente diferentes, e um valor dito antes do diagnóstico seria um chute. Pelo WhatsApp conseguimos entender o problema e orientar o próximo passo.',
+      'Só depois de olhar o aparelho. Sintomas parecidos podem ter causas completamente diferentes, e um valor dito antes do diagnóstico seria um chute. Por telefone conseguimos entender o problema e orientar o próximo passo.',
   },
   {
     question: 'O conserto começa antes de eu aprovar?',
@@ -259,7 +281,12 @@ export const faqs = [
   {
     question: 'Como solicito um orçamento?',
     answer:
-      'Chame no WhatsApp com o modelo do aparelho e uma descrição do defeito — fotos ou um vídeo curto do problema ajudam bastante no diagnóstico inicial.',
+      'Ligue para (41) 3092-4949 com o modelo do aparelho e uma descrição do defeito em mãos, ou traga o equipamento até a loja no Água Verde. O orçamento é fechado depois do diagnóstico.',
+  },
+  {
+    question: 'Onde fica a TV System?',
+    answer:
+      'Na R. Palmeiras, 273 — Água Verde, Curitiba/PR, CEP 80620-110. Atendemos de segunda a sexta das 09h às 18h e aos sábados das 09h às 12h.',
   },
 ] as const;
 
@@ -285,11 +312,24 @@ export const navLinks = [
   { href: '#contato', label: 'Contato' },
 ] as const;
 
-export const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-  site.whatsappMessage,
-)}`;
-
 export const phoneUrl = `tel:+${site.phoneLink}`;
+
+/**
+ * null whenever no WhatsApp mobile is configured — see the note on
+ * `site.whatsapp`. Components must never build a wa.me URL themselves.
+ */
+export const whatsappUrl = site.whatsapp
+  ? `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(site.whatsappMessage)}`
+  : null;
+
+/**
+ * Where every "solicitar orçamento" control points, and what it should be
+ * called. One helper rather than a conditional in each component, so adding
+ * the WhatsApp number later switches the entire site in one place.
+ */
+export const primaryContact = whatsappUrl
+  ? { href: whatsappUrl, external: true, label: 'Solicitar orçamento', channel: 'whatsapp' as const }
+  : { href: phoneUrl, external: false, label: 'Solicitar orçamento', channel: 'phone' as const };
 
 export const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
   site.address.mapsQuery,

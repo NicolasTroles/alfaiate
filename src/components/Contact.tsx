@@ -6,8 +6,8 @@ import {
   mapsEmbedUrl,
   mapsUrl,
   phoneUrl,
+  primaryContact,
   site,
-  whatsappUrl,
 } from '@/config/site.config';
 
 /**
@@ -32,16 +32,16 @@ export function Faq() {
               Perguntas que a gente ouve todo dia.
             </h2>
             <p className="mt-5 max-w-prose leading-relaxed text-inkMute">
-              Se a sua não estiver aqui, é só perguntar direto no WhatsApp.
+              Se a sua não estiver aqui, é só perguntar direto para a equipe.
             </p>
             <div className="mt-8">
               <Button
-                href={whatsappUrl}
-                external
+                href={primaryContact.href}
+                external={primaryContact.external}
                 variant="outlineLight"
                 icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
               >
-                Perguntar no WhatsApp
+                {primaryContact.channel === 'whatsapp' ? 'Perguntar no WhatsApp' : 'Ligar e perguntar'}
               </Button>
             </div>
           </div>
@@ -80,15 +80,22 @@ export function Faq() {
  * which is a worse failure than an honest empty state.
  */
 export function Contact() {
+  // WhatsApp is listed only when a mobile is actually configured — see the
+  // note on site.whatsapp. Advertising a channel that does not answer is
+  // worse than offering one fewer.
   const channels = [
-    {
-      icon: MessageSquare,
-      label: 'WhatsApp',
-      value: site.phone,
-      description: 'O canal mais rápido. Mande o modelo e o defeito.',
-      href: whatsappUrl,
-      external: true,
-    },
+    ...(primaryContact.channel === 'whatsapp'
+      ? [
+          {
+            icon: MessageSquare,
+            label: 'WhatsApp',
+            value: site.phone,
+            description: 'O canal mais rápido. Mande o modelo e o defeito.',
+            href: primaryContact.href,
+            external: true,
+          },
+        ]
+      : []),
     {
       icon: Phone,
       label: 'Telefone',
@@ -124,9 +131,8 @@ export function Contact() {
             Traga o defeito. A gente encontra a causa.
           </h2>
           <p className="mt-6 max-w-prose text-lg leading-relaxed text-ink">
-            Descreva o que está acontecendo com o aparelho — modelo, marca e o que ele faz (ou
-            deixou de fazer). Fotos e um vídeo curto do problema ajudam bastante no diagnóstico
-            inicial.
+            Ligue ou traga o aparelho até a loja, no Água Verde. Ter em mãos a marca, o modelo e
+            o que ele faz (ou deixou de fazer) já adianta boa parte do diagnóstico.
           </p>
 
           <ul className="mt-10 space-y-px overflow-hidden rounded-card border border-line bg-line">
@@ -259,11 +265,11 @@ export function CtaBand() {
 
           <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
             <Button
-              href={whatsappUrl}
-              external
+              href={primaryContact.href}
+              external={primaryContact.external}
               icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
             >
-              Solicitar orçamento
+              {primaryContact.label}
             </Button>
             <Button href={phoneUrl} variant="outlineDark">
               Ligar agora

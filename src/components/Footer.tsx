@@ -1,6 +1,6 @@
 import { MapPin, Phone } from 'lucide-react';
 import Brand from '@/components/Brand';
-import { navLinks, phoneUrl, site, whatsappUrl } from '@/config/site.config';
+import { navLinks, phoneUrl, primaryContact, site } from '@/config/site.config';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -13,7 +13,7 @@ export default function Footer() {
             <Brand variant="dark" />
             <p className="mt-6 max-w-sm leading-relaxed text-chalkMute">
               {site.tagline} Conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos,
-              air fryers e lava-louças.
+              air fryers e lava-louças em {site.city} e região.
             </p>
             <p className="hud mt-6 text-chalk/45">Assistência técnica — não vendemos aparelhos</p>
           </div>
@@ -56,12 +56,15 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={primaryContact.href}
+                  {...(primaryContact.external
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
                   className="inline-flex min-h-[44px] items-center text-amber transition-colors hover:text-chalk"
                 >
-                  Solicitar orçamento pelo WhatsApp
+                  {primaryContact.channel === 'whatsapp'
+                    ? 'Solicitar orçamento pelo WhatsApp'
+                    : 'Solicitar orçamento por telefone'}
                 </a>
               </li>
             </ul>

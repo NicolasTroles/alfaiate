@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
-import { ArrowRight, MessageSquare } from 'lucide-react';
+import { ArrowRight, MessageSquare, Star } from 'lucide-react';
 import Button from '@/components/Button';
-import { phoneUrl, site, tickerItems, whatsappUrl } from '@/config/site.config';
+import { mapsUrl, phoneUrl, primaryContact, site, tickerItems } from '@/config/site.config';
 
 // The panel shader is decorative and client-only: it is not part of the
 // first paint, and everything on top of it is already legible against the
@@ -55,17 +55,17 @@ export default function Hero() {
 
             <p className="mt-6 max-w-prose text-[17px] leading-relaxed text-chalkMute sm:text-lg">
               Conserto de <strong className="font-semibold text-chalk">TVs LED, LCD e Smart TVs</strong>,
-              micro-ondas, fornos elétricos, air fryers e lava-louças. A{' '}
+              micro-ondas, fornos elétricos, air fryers e lava-louças em {site.city}. A{' '}
               {site.brandName} não vende aparelhos — abre, testa e conserta o seu.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button
-                href={whatsappUrl}
-                external
+                href={primaryContact.href}
+                external={primaryContact.external}
                 icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
               >
-                Solicitar orçamento
+                {primaryContact.label}
               </Button>
               <Button
                 href={phoneUrl}
@@ -76,9 +76,24 @@ export default function Hero() {
               </Button>
             </div>
 
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-7 inline-flex min-h-[44px] items-center gap-2.5 text-chalkMute transition-colors hover:text-chalk"
+            >
+              <Star aria-hidden="true" className="h-4 w-4 fill-amber text-amber" strokeWidth={2} />
+              <span className="font-display text-lg font-bold text-chalk">
+                {site.googleRating}
+              </span>
+              <span className="text-sm">
+                {site.googleReviewCount} avaliações no Google
+              </span>
+            </a>
+
             {/* Three process facts. Nothing here is a claim about speed, price
                 or warranty — only about how the bench works. */}
-            <ul className="mt-9 grid max-w-xl gap-x-6 gap-y-3 sm:grid-cols-3">
+            <ul className="mt-7 grid max-w-xl gap-x-6 gap-y-3 sm:grid-cols-3">
               {[
                 'Orçamento só após o diagnóstico',
                 'Reparo em nível de placa',
@@ -106,7 +121,7 @@ export default function Hero() {
               <dl className="mt-5 space-y-4">
                 {[
                   { term: 'Equipamento', value: 'o seu aparelho' },
-                  { term: 'Sintoma', value: 'descreva no WhatsApp' },
+                  { term: 'Sintoma', value: 'você descreve' },
                   { term: 'Etapa', value: 'aguardando entrada' },
                 ].map((row) => (
                   <div key={row.term} className="flex items-baseline gap-3">
@@ -122,13 +137,13 @@ export default function Hero() {
                 ))}
               </dl>
 
-              <div className="mt-6 flex items-center gap-2.5 rounded-[10px] border-l-2 border-amber bg-amber/15 px-4 py-3">
+              <div className="mt-6 flex items-center gap-2.5 rounded-[10px] border-l-2 border-amber bg-navyDeep/60 px-4 py-3">
                 <span
                   aria-hidden="true"
                   className="h-2 w-2 animate-blink-dot rounded-full bg-amber"
                 />
                 <p className="text-[13px] font-medium text-chalk">
-                  Mande o modelo e o defeito. A gente responde com o próximo passo.
+                  Com o modelo e o defeito em mãos, a gente já orienta o próximo passo.
                 </p>
               </div>
             </div>

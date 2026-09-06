@@ -36,8 +36,14 @@ export const site = {
     title: 'Activa Eletrônica | Assistência Técnica em Curitiba',
     description:
       'Assistência técnica em Curitiba: conserto de TV (plasma, LED, LCD), placas eletrônicas, micro-ondas, fornos elétricos e air fryers. Diagnóstico técnico e orçamento pelo WhatsApp.',
-    // Confirmed production domain.
-    url: 'https://activaeletronica.com.br',
+    // Confirmed production domain. The `www.` is required, not cosmetic:
+    // www is the production domain on Vercel and the apex 308-redirects to
+    // it, so pointing this at the apex made the canonical tag resolve to a
+    // redirect back to www. Google discarded it and filed the site under
+    // "Duplicate without user-selected canonical". This value feeds the
+    // canonical tag, og:url, sitemap.xml and robots.txt, so it has to match
+    // whichever domain Vercel actually serves 200s on.
+    url: 'https://www.activaeletronica.com.br',
   },
 } as const;
 

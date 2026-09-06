@@ -21,13 +21,13 @@ export const site = {
   brandName: 'TV System',
   brandFull: 'TV System Assistência Técnica',
   tagline:
-    'Assistência técnica com quase 15 anos em Curitiba, especializada em TVs, micro-ondas e eletrodomésticos.',
+    'Assistência técnica com quase 14 anos em Curitiba, especializada em TVs, micro-ondas e eletrodomésticos.',
 
   /**
-   * "Quase 15 anos", as the client put it — deliberately stored as the
+   * "Quase 14 anos", as the client put it — deliberately stored as the
    * approximate figure they gave rather than a founding year, because no
    * founding year was confirmed. Every place this appears in the copy says
-   * "quase 15 anos" or "há quase 15 anos"; nothing computes a date from it,
+   * "quase 14 anos" or "há quase 14 anos"; nothing computes a date from it,
    * and it is not published as schema.org foundingDate.
    *
    * The original brand brief's hard requirement still holds and has not been
@@ -37,7 +37,7 @@ export const site = {
    * positioning argument, and the "o que fazemos / o que não fazemos" sheet
    * still carries it.
    */
-  yearsInBusiness: 'quase 15 anos',
+  yearsInBusiness: 'quase 14 anos',
 
   // Confirmed: the Google profile categorises the business as a television
   // repair service in Curitiba, Paraná.
@@ -80,7 +80,8 @@ export const site = {
     city: 'Curitiba',
     state: 'PR',
     zip: '80620-110',
-    mapsQuery: 'TV System Assistência Técnica, R. Palmeiras, 273 - Água Verde, Curitiba - PR, 80620-110',
+    mapsQuery:
+      'TV System Assistência Técnica, R. Palmeiras, 273 - Água Verde, Curitiba - PR, 80620-110',
   },
 
   /**
@@ -89,7 +90,11 @@ export const site = {
    */
   openingHours: 'Segunda a sexta, 09h às 18h · Sábado, 09h às 12h',
   openingHoursSchema: [
-    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' },
+    {
+      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    },
     { days: ['Saturday'], opens: '09:00', closes: '12:00' },
   ],
 
@@ -114,7 +119,7 @@ export const site = {
   seo: {
     title: 'TV System | Assistência Técnica em TV e Eletrodomésticos em Curitiba',
     description:
-      'Assistência técnica em Curitiba há quase 15 anos: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Loja no Água Verde, orçamento pelo WhatsApp.',
+      'Assistência técnica em Curitiba há quase 14 anos: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Loja no Água Verde, orçamento pelo WhatsApp.',
     // TODO: confirm with client — replace with the real domain after the
     // first deploy, then redeploy so canonical/OG URLs match production.
     url: 'https://tvsystem.com.br',
@@ -284,7 +289,8 @@ export const differentials = [
   {
     icon: 'cpu' as const,
     title: 'Reparo em nível de placa',
-    description: 'Trabalhamos no componente, não só na troca de peça inteira quando ela não é necessária.',
+    description:
+      'Trabalhamos no componente, não só na troca de peça inteira quando ela não é necessária.',
   },
   {
     icon: 'message' as const,
@@ -334,7 +340,7 @@ export const faqs = [
   {
     question: 'Há quanto tempo a TV System funciona?',
     answer:
-      'Há quase 15 anos atendendo em Curitiba, com loja física no Água Verde. São 125 avaliações no Google, com nota 4,5.',
+      'Há quase 14 anos atendendo em Curitiba, com loja física no Água Verde. São 125 avaliações no Google, com nota 4,5.',
   },
   {
     question: 'Onde fica a TV System?',
@@ -381,7 +387,12 @@ export const whatsappUrl = site.whatsapp
  * the WhatsApp number later switches the entire site in one place.
  */
 export const primaryContact = whatsappUrl
-  ? { href: whatsappUrl, external: true, label: 'Solicitar orçamento', channel: 'whatsapp' as const }
+  ? {
+      href: whatsappUrl,
+      external: true,
+      label: 'Solicitar orçamento',
+      channel: 'whatsapp' as const,
+    }
   : { href: phoneUrl, external: false, label: 'Solicitar orçamento', channel: 'phone' as const };
 
 export const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

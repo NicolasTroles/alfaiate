@@ -69,18 +69,17 @@ export function Positioning() {
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-6">
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.03em] text-navy">
-            Quase 15 anos em {site.city}
-            <span className="mt-1 block text-signal">consertando, não vendendo.</span>
+            Quase 14 anos em {site.city}
           </h2>
           <p className="mt-7 max-w-prose text-lg leading-relaxed text-ink">
             A {site.brandFull} atende há {site.yearsInBusiness} em {site.city}, com loja no Água
-            Verde. Nesse tempo todo o trabalho foi sempre o mesmo: abrir, testar, encontrar a
-            causa do defeito e devolver o aparelho funcionando — nunca vender um novo no lugar.
+            Verde. Nesse tempo todo o trabalho foi sempre o mesmo: abrir, testar, encontrar a causa
+            do defeito e devolver o aparelho funcionando — nunca vender um novo no lugar.
           </p>
           <p className="mt-4 max-w-prose leading-relaxed text-inkMute">
             É por isso que a primeira coisa que fazemos é diagnosticar, e a segunda é te contar
-            exatamente o que encontramos. Inclusive quando a conclusão é que o conserto não vale
-            a pena.
+            exatamente o que encontramos. Inclusive quando a conclusão é que o conserto não vale a
+            pena.
           </p>
 
           {/* The three credentials that are actually confirmed. No "milhares
@@ -90,7 +89,10 @@ export function Positioning() {
           <dl className="mt-9 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-3">
             {[
               { term: 'No mercado', value: site.yearsInBusiness },
-              { term: 'Google', value: `${site.googleRating} · ${site.googleReviewCount} avaliações` },
+              {
+                term: 'Google',
+                value: `${site.googleRating} · ${site.googleReviewCount} avaliações`,
+              },
               { term: 'Loja física', value: `${site.address.district}, ${site.city}` },
             ].map((stat) => (
               <div key={stat.term} className="bg-white px-5 py-4">
@@ -118,8 +120,7 @@ export function Positioning() {
           <div className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2">
             <div className="bg-white p-7">
               <p className="hud flex items-center gap-2 text-signal">
-                <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={3} />
-                O que fazemos
+                <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={3} />O que fazemos
               </p>
               <ul className="mt-5 space-y-3.5">
                 {[
@@ -142,8 +143,8 @@ export function Positioning() {
 
             <div className="bg-panel p-7">
               <p className="hud flex items-center gap-2 text-inkMute">
-                <Minus aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={3} />
-                O que não fazemos
+                <Minus aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={3} />O que não
+                fazemos
               </p>
               <ul className="mt-5 space-y-3.5">
                 {[
@@ -324,13 +325,13 @@ export function Store() {
         <div className="lg:col-span-7">
           <Reveal>
             <h2 className="font-display text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em] text-navy">
-              Quase 15 anos, e a mesma regra: quem abre o aparelho é quem te explica.
+              Quase 14 anos, e a mesma regra: quem abre o aparelho é quem te explica.
             </h2>
             <p className="mt-6 max-w-prose text-lg leading-relaxed text-ink">
               A diferença entre uma assistência técnica e uma troca de peça no escuro está no
-              método. Aqui o equipamento é testado ponto a ponto até a causa real aparecer — e o
-              que for encontrado é explicado em português, sem termo inventado para justificar
-              valor. É o que mantém a loja aberta há quase 15 anos.
+              método. Aqui o equipamento é testado ponto a ponto até a causa real aparecer — e o que
+              for encontrado é explicado em português, sem termo inventado para justificar valor. É
+              o que mantém a loja aberta há quase 14 anos.
             </p>
           </Reveal>
 
@@ -345,7 +346,9 @@ export function Store() {
                   <h3 className="mt-5 font-display text-lg font-bold tracking-[-0.01em] text-navy">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-inkMute">{item.description}</p>
+                  <p className="mt-2 text-[15px] leading-relaxed text-inkMute">
+                    {item.description}
+                  </p>
                 </Reveal>
               );
             })}

@@ -54,10 +54,11 @@ export default function Hero() {
             </h1>
 
             <p className="mt-6 max-w-prose text-[17px] leading-relaxed text-chalkMute sm:text-lg">
-              Conserto de <strong className="font-semibold text-chalk">TVs LED, LCD e Smart TVs</strong>,
+              Conserto de{' '}
+              <strong className="font-semibold text-chalk">TVs LED, LCD e Smart TVs</strong>,
               micro-ondas, fornos elétricos, air fryers e lava-louças em {site.city}. A{' '}
-              {site.brandName} atende há {site.yearsInBusiness} e não vende aparelhos — abre,
-              testa e conserta o seu.
+              {site.brandName} atende há {site.yearsInBusiness} e não vende aparelhos, abre, testa e
+              conserta o seu.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -84,12 +85,8 @@ export default function Hero() {
               className="mt-7 inline-flex min-h-[44px] items-center gap-2.5 text-chalkMute transition-colors hover:text-chalk"
             >
               <Star aria-hidden="true" className="h-4 w-4 fill-amber text-amber" strokeWidth={2} />
-              <span className="font-display text-lg font-bold text-chalk">
-                {site.googleRating}
-              </span>
-              <span className="text-sm">
-                {site.googleReviewCount} avaliações no Google
-              </span>
+              <span className="font-display text-lg font-bold text-chalk">{site.googleRating}</span>
+              <span className="text-sm">{site.googleReviewCount} avaliações no Google</span>
             </a>
 
             {/* Three process facts. Nothing here is a claim about speed, price
@@ -100,7 +97,10 @@ export default function Hero() {
                 'Orçamento só após o diagnóstico',
                 'Nada é consertado sem aprovação',
               ].map((fact) => (
-                <li key={fact} className="flex items-start gap-2.5 text-[13px] leading-snug text-chalkMute">
+                <li
+                  key={fact}
+                  className="flex items-start gap-2.5 text-[13px] leading-snug text-chalkMute"
+                >
                   <span
                     aria-hidden="true"
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber"
@@ -132,7 +132,9 @@ export default function Hero() {
                         aria-hidden="true"
                         className="h-px flex-1 border-b border-dashed border-chalk/20"
                       />
-                      <span className="text-right font-mono text-[13px] text-chalk">{row.value}</span>
+                      <span className="text-right font-mono text-[13px] text-chalk">
+                        {row.value}
+                      </span>
                     </dd>
                   </div>
                 ))}

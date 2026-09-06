@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   ArrowRight,
   Check,
@@ -74,7 +75,9 @@ export function Positioning() {
           <p className="mt-7 max-w-prose text-lg leading-relaxed text-ink">
             A {site.brandFull} atende há {site.yearsInBusiness} em {site.city}, com loja no Água
             Verde. Nesse tempo todo o trabalho foi sempre o mesmo: abrir, testar, encontrar a causa
-            do defeito e devolver o aparelho funcionando — nunca vender um novo no lugar.
+            do defeito e devolver o aparelho funcionando. Quando o conserto não compensa, temos
+            aparelhos usados revisados, com {site.usedAppliances.warranty} — mas essa é a segunda
+            opção, nunca a primeira.
           </p>
           <p className="mt-4 max-w-prose leading-relaxed text-inkMute">
             É por isso que a primeira coisa que fazemos é diagnosticar, e a segunda é te contar
@@ -128,6 +131,7 @@ export function Positioning() {
                   'Conserto de TVs, micro-ondas e eletrodomésticos',
                   'Reparo em nível de placa e componente',
                   'Avaliação honesta de quando não compensa',
+                  `Venda de aparelhos usados com ${site.usedAppliances.warranty}`,
                 ].map((item) => (
                   <li key={item} className="flex gap-3 text-[15px] leading-snug text-ink">
                     <Check
@@ -148,8 +152,8 @@ export function Positioning() {
               </p>
               <ul className="mt-5 space-y-3.5">
                 {[
-                  'Venda de televisores ou eletrodomésticos',
-                  'Venda de peças e componentes avulsos',
+                  'Venda de aparelhos novos',
+                  'Troca sugerida quando o conserto ainda compensa',
                   'Orçamento fechado sem abrir o aparelho',
                   'Conserto iniciado sem a sua aprovação',
                 ].map((item) => (
@@ -216,7 +220,17 @@ export function Services() {
                   ].join(' ')}
                 >
                   {featured ? (
-                    <div aria-hidden="true" className="pixel-grid-dark absolute inset-0" />
+                    <div aria-hidden="true" className="absolute inset-0">
+                      <Image
+                        src="/servicos1.png"
+                        alt=""
+                        fill
+                        sizes="(min-width: 1024px) 66vw, 100vw"
+                        className="object-cover object-center opacity-70"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/70 to-navy/35" />
+                      <div className="pixel-grid-dark absolute inset-0" />
+                    </div>
                   ) : null}
 
                   <div className="relative flex items-start justify-between gap-4">
@@ -308,21 +322,30 @@ export function Store() {
     <section id="loja" className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-28">
       <SectionMarker code="03" label="A loja" />
 
-      <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-        <Reveal className="lg:col-span-5">
-          <div className="overflow-hidden rounded-card">
+      <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <Reveal className="lg:col-span-6">
+          <figure className="relative overflow-hidden rounded-card border border-line">
             <Photo
-              alt="Interior da loja da TV System, com televisores em manutenção sobre a bancada de reparo"
+              src="/outros.png"
+              alt="Técnico da TV System trabalhando em um micro-ondas na oficina, com air fryer, forno elétrico, lava-louças e outros eletrodomésticos nas prateleiras ao fundo"
               placeholderLabel="Aqui entra uma foto real da loja — o balcão de atendimento ou a oficina com aparelhos em manutenção."
-              prompt="Photograph of the interior of a well-established electronics repair shop, seen from the customer side of the service counter: shelves of televisions and small appliances awaiting repair, an organised repair bench visible behind with a flat-screen TV opened face-down, exposed circuit boards, a soldering iron and a multimeter. The place looks lived-in and professional, like a business that has been on the same street for over a decade. Cool deep-navy ambient tone (#001F4F) with technical blue accents (#005899) and a single warm amber highlight (#FDA201) from a task lamp. Editorial documentary lighting, shallow depth of field, no text, no logos, no legible faces. 4:5 vertical framing."
-              width={880}
-              height={1100}
-              sizes="(min-width: 1024px) 40vw, 100vw"
+              prompt="Photograph of the interior of a well-established electronics repair shop: a technician working on an opened microwave at a dark workbench, shelves behind holding an air fryer, an electric oven, a dishwasher, a blender, a coffee maker and a television, hand tools on a pegboard. The place looks lived-in and professional, like a business that has been on the same street for over a decade. Dark charcoal cabinetry with warm shelf lighting, cool blue ambient tone. Editorial documentary lighting, no legible text, no logos, no legible faces. 3:2 horizontal framing."
+              width={600}
+              height={400}
+              sizes="(min-width: 1024px) 46vw, 100vw"
             />
-          </div>
+            {/* Ties the photograph to the rest of the page without recolouring
+                it: the shop shot stays natural (it is evidence, and a heavy
+                duotone would read as styling over substance), and only picks
+                up the same corner marks used everywhere else. */}
+            <span
+              aria-hidden="true"
+              className="bracket-frame pointer-events-none absolute inset-3 text-amber/70"
+            />
+          </figure>
         </Reveal>
 
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-6">
           <Reveal>
             <h2 className="font-display text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em] text-navy">
               Quase 14 anos, e a mesma regra: quem abre o aparelho é quem te explica.
@@ -334,61 +357,59 @@ export function Store() {
               o que mantém a loja aberta há quase 14 anos.
             </p>
           </Reveal>
-
-          <ul className="mt-12 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2">
-            {differentials.map((item, index) => {
-              const Icon = DIFFERENTIAL_ICONS[item.icon];
-              return (
-                <Reveal as="li" key={item.title} delay={index * 80} className="bg-white p-7">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-navy text-amber">
-                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
-                  </span>
-                  <h3 className="mt-5 font-display text-lg font-bold tracking-[-0.01em] text-navy">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-inkMute">
-                    {item.description}
-                  </p>
-                </Reveal>
-              );
-            })}
-          </ul>
-
-          {press.length > 0 ? (
-            <Reveal className="mt-10">
-              <div className="rounded-card border border-line bg-panel p-7">
-                <p className="hud flex items-center gap-2 text-signal">
-                  <Newspaper aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.4} />
-                  Na imprensa
-                </p>
-                <ul className="mt-5 space-y-4">
-                  {press.map((mention) => (
-                    <li key={`${mention.outlet}-${mention.headline}`}>
-                      <p className="font-display text-[17px] font-bold leading-snug text-navy">
-                        {mention.url ? (
-                          <a
-                            href={mention.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-signal hover:underline"
-                          >
-                            {mention.headline}
-                          </a>
-                        ) : (
-                          mention.headline
-                        )}
-                      </p>
-                      <p className="hud mt-1.5 text-inkMute">
-                        {mention.outlet} · {mention.date}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ) : null}
         </div>
       </div>
+
+      <ul className="mt-14 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        {differentials.map((item, index) => {
+          const Icon = DIFFERENTIAL_ICONS[item.icon];
+          return (
+            <Reveal as="li" key={item.title} delay={index * 80} className="bg-white p-7">
+              <span className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-navy text-amber">
+                <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+              </span>
+              <h3 className="mt-5 font-display text-lg font-bold tracking-[-0.01em] text-navy">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-inkMute">{item.description}</p>
+            </Reveal>
+          );
+        })}
+      </ul>
+
+      {press.length > 0 ? (
+        <Reveal className="mt-10">
+          <div className="rounded-card border border-line bg-panel p-7">
+            <p className="hud flex items-center gap-2 text-signal">
+              <Newspaper aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.4} />
+              Na imprensa
+            </p>
+            <ul className="mt-5 space-y-4">
+              {press.map((mention) => (
+                <li key={`${mention.outlet}-${mention.headline}`}>
+                  <p className="font-display text-[17px] font-bold leading-snug text-navy">
+                    {mention.url ? (
+                      <a
+                        href={mention.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-signal hover:underline"
+                      >
+                        {mention.headline}
+                      </a>
+                    ) : (
+                      mention.headline
+                    )}
+                  </p>
+                  <p className="hud mt-1.5 text-inkMute">
+                    {mention.outlet} · {mention.date}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+      ) : null}
     </section>
   );
 }

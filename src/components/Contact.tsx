@@ -1,14 +1,7 @@
-import { ArrowRight, Clock, MapPin, MessageSquare, Phone, Plus } from 'lucide-react';
+import { ArrowRight, Clock, MapPin, Phone, Plus } from 'lucide-react';
 import Button from '@/components/Button';
 import Reveal from '@/components/Reveal';
-import {
-  faqs,
-  mapsEmbedUrl,
-  mapsUrl,
-  phoneUrl,
-  primaryContact,
-  site,
-} from '@/config/site.config';
+import { faqs, mapsEmbedUrl, mapsUrl, phoneUrl, primaryContact, site } from '@/config/site.config';
 
 /**
  * FAQ as native <details>/<summary>. No accordion state, no JavaScript, no
@@ -41,7 +34,9 @@ export function Faq() {
                 variant="outlineLight"
                 icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
               >
-                {primaryContact.channel === 'whatsapp' ? 'Perguntar no WhatsApp' : 'Ligar e perguntar'}
+                {primaryContact.channel === 'whatsapp'
+                  ? 'Perguntar no WhatsApp'
+                  : 'Ligar e perguntar'}
               </Button>
             </div>
           </div>
@@ -80,48 +75,7 @@ export function Faq() {
  * which is a worse failure than an honest empty state.
  */
 export function Contact() {
-  // WhatsApp is listed only when a number is configured — see the note on
-  // site.whatsapp. Advertising a channel that does not answer is worse than
-  // offering one fewer.
-  //
-  // Here WhatsApp and Telefone show the same digits, because they are the
-  // same line. The descriptions say so outright: a visitor who sees one
-  // number printed twice with no explanation reads it as a bug.
-  const channels = [
-    ...(primaryContact.channel === 'whatsapp'
-      ? [
-          {
-            icon: MessageSquare,
-            label: 'WhatsApp',
-            value: site.phone,
-            description:
-              'O canal mais rápido. Mande o modelo, o defeito e, se der, uma foto ou vídeo.',
-            href: primaryContact.href,
-            external: true,
-          },
-        ]
-      : []),
-    {
-      icon: Phone,
-      label: 'Telefone',
-      value: site.phone,
-      description:
-        'O mesmo número atende por ligação, se você preferir falar com um técnico.',
-      href: phoneUrl,
-      external: false,
-    },
-    {
-      icon: Clock,
-      label: 'Atendimento',
-      value: site.openingHours,
-      description: 'Entradas e retiradas de equipamento dentro desse horário.',
-      href: null,
-      external: false,
-      // Full sentence rather than a phone number: set at body size so it
-      // doesn't wrap mid-phrase at display weight.
-      compact: true,
-    },
-  ];
+  const hasWhatsapp = primaryContact.channel === 'whatsapp';
 
   return (
     <section id="contato" className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-28">
@@ -142,47 +96,77 @@ export function Contact() {
             inicial. Se preferir, ligue ou traga o equipamento até a loja, no Água Verde.
           </p>
 
-          <ul className="mt-10 space-y-px overflow-hidden rounded-card border border-line bg-line">
-            {channels.map((channel) => {
-              const Icon = channel.icon;
-              const content = (
-                <div className="flex gap-4 bg-white p-6 transition-colors duration-200 group-hover:bg-panel">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-signal/10 text-signal">
-                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="hud text-inkMute">{channel.label}</p>
-                    <p
-                      className={`mt-1.5 font-display font-bold text-navy ${
-                        'compact' in channel ? 'text-[15px] leading-snug' : 'text-lg'
-                      }`}
-                    >
-                      {channel.value}
-                    </p>
-                    <p className="mt-1 text-sm leading-snug text-inkMute">{channel.description}</p>
-                  </div>
+          {/*
+            One number, one card, two actions.
+            WhatsApp and the landline are the same line here, so listing them
+            as two entries printed the same digits twice — which reads as a
+            duplicated field no matter how the descriptions explain it. The
+            number is stated once and the two things you can do with it are
+            buttons, which is also the more useful shape: the visitor picks an
+            action rather than picking a row.
+          */}
+          <div className="mt-10 overflow-hidden rounded-card border border-line">
+            <div className="bg-white p-6 sm:p-7">
+              <div className="flex gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-signal/10 text-signal">
+                  <Phone aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+                </span>
+                <div className="min-w-0">
+                  <p className="hud text-inkMute">
+                    {hasWhatsapp ? 'WhatsApp e telefone' : 'Telefone'}
+                  </p>
+                  <a
+                    href={phoneUrl}
+                    className="mt-1.5 block font-display text-[26px] font-bold leading-none tracking-[-0.02em] text-navy transition-colors hover:text-signal sm:text-3xl"
+                  >
+                    {site.phone}
+                  </a>
+                  <p className="mt-2.5 text-sm leading-snug text-inkMute">
+                    {hasWhatsapp
+                      ? 'Um número só para os dois canais. Mande o modelo, o defeito e, se der, uma foto ou vídeo do problema.'
+                      : 'Fale com um técnico durante o horário de atendimento.'}
+                  </p>
                 </div>
-              );
+              </div>
 
-              return (
-                <li key={channel.label} className="group">
-                  {channel.href ? (
-                    <a
-                      href={channel.href}
-                      {...(channel.external
-                        ? { target: '_blank', rel: 'noopener noreferrer' }
-                        : {})}
-                      className="block"
-                    >
-                      {content}
-                    </a>
-                  ) : (
-                    content
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+              <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
+                {hasWhatsapp ? (
+                  <Button
+                    href={primaryContact.href}
+                    external
+                    icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
+                    className="sm:flex-1"
+                  >
+                    WhatsApp
+                  </Button>
+                ) : null}
+                <Button
+                  href={phoneUrl}
+                  variant="outlineLight"
+                  icon={<Phone className="h-4 w-4" strokeWidth={2.2} />}
+                  ariaLabel={`Ligar para a ${site.brandFull} no ${site.phone}`}
+                  className="sm:flex-1"
+                >
+                  Ligar
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex gap-4 border-t border-line bg-panel p-6 sm:p-7">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-signal/10 text-signal">
+                <Clock aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+              </span>
+              <div className="min-w-0">
+                <p className="hud text-inkMute">Atendimento</p>
+                <p className="mt-1.5 font-display text-[15px] font-bold leading-snug text-navy">
+                  {site.openingHours}
+                </p>
+                <p className="mt-1 text-sm leading-snug text-inkMute">
+                  Entradas e retiradas de equipamento dentro desse horário.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="lg:col-span-7">
@@ -253,37 +237,6 @@ export function CtaBand() {
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber to-transparent"
       />
-
-      <div className="relative mx-auto max-w-[1400px] px-5 py-24 sm:px-8 sm:py-32">
-        <div className="grid items-end gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <p className="hud flex items-center gap-2.5 text-amber">
-              <span aria-hidden="true" className="h-px w-8 bg-amber" />
-              Próximo passo
-            </p>
-            <h2 className="mt-6 max-w-[14ch] font-display text-[clamp(2.2rem,6vw,4.5rem)] font-bold leading-[0.96] tracking-[-0.03em] text-chalk">
-              Descreva o defeito. A gente responde.
-            </h2>
-            <p className="mt-6 max-w-prose text-lg leading-relaxed text-chalkMute">
-              Sem compromisso e sem orçamento no escuro — primeiro entendemos o que está
-              acontecendo, depois falamos de conserto.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
-            <Button
-              href={primaryContact.href}
-              external={primaryContact.external}
-              icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
-            >
-              {primaryContact.label}
-            </Button>
-            <Button href={phoneUrl} variant="outlineDark">
-              Ligar agora
-            </Button>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }

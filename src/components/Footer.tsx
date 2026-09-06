@@ -16,7 +16,7 @@ export default function Footer() {
               air fryers e lava-louças em {site.city} e região.
             </p>
             <p className="hud mt-6 text-chalk/45">
-              Há {site.yearsInBusiness} em {site.city} — assistência técnica, não vendemos aparelhos
+              Há {site.yearsInBusiness} em {site.city} — assistência técnica especializada
             </p>
           </div>
 

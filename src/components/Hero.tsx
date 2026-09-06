@@ -57,8 +57,7 @@ export default function Hero() {
               Conserto de{' '}
               <strong className="font-semibold text-chalk">TVs LED, LCD e Smart TVs</strong>,
               micro-ondas, fornos elétricos, air fryers e lava-louças em {site.city}. A{' '}
-              {site.brandName} atende há {site.yearsInBusiness} e não vende aparelhos, abre, testa e
-              conserta o seu.
+              {site.brandName} atende há {site.yearsInBusiness}: abre, testa e conserta o seu.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

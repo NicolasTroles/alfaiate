@@ -39,6 +39,21 @@ export const site = {
    */
   yearsInBusiness: 'quase 14 anos',
 
+  /**
+   * The shop also sells used appliances, reconditioned, with a 3-month
+   * warranty (client, 2026-09-06).
+   *
+   * This corrects a claim the site previously made outright — "não vendemos
+   * aparelhos" — which came from the original brand brief's line about not
+   * being a television shop. Both are true at once, but only if the wording
+   * is precise: they do not retail NEW equipment, and repair is the primary
+   * business; used units are the fallback for when a repair is not worth it.
+   * Nothing on the site may say "não vendemos aparelhos" any more.
+   */
+  usedAppliances: {
+    warranty: '3 meses de garantia',
+  },
+
   // Confirmed: the Google profile categorises the business as a television
   // repair service in Curitiba, Paraná.
   city: 'Curitiba',
@@ -308,11 +323,6 @@ export const differentials = [
  */
 export const faqs = [
   {
-    question: 'A TV System vende televisores?',
-    answer:
-      'Não. A TV System é uma assistência técnica: temos loja física no Água Verde, mas o que fazemos é manutenção e conserto de aparelhos. Não vendemos televisores nem eletrodomésticos.',
-  },
-  {
     question: 'Quais aparelhos a TV System conserta?',
     answer:
       'TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers, lava-louças e outros equipamentos eletrônicos e eletrodomésticos avaliados caso a caso.',
@@ -346,6 +356,11 @@ export const faqs = [
     question: 'Onde fica a TV System?',
     answer:
       'Na R. Palmeiras, 273 — Água Verde, Curitiba/PR, CEP 80620-110. Atendemos de segunda a sexta das 09h às 18h e aos sábados das 09h às 12h.',
+  },
+  {
+    question: 'A TV System vende aparelhos?',
+    answer:
+      'Sim, aparelhos usados — revisados pela nossa equipe e com 3 meses de garantia. Não trabalhamos com a venda de produtos novos: o foco da loja é a assistência técnica, e o aparelho usado costuma ser a alternativa para quando o conserto do seu não compensa.',
   },
 ] as const;
 

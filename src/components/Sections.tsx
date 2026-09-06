@@ -323,8 +323,10 @@ export function Process() {
 
           <ol className="mt-16 grid gap-px border border-stoneLine bg-stoneLine md:grid-cols-2 lg:grid-cols-4">
             {process.map((step, i) => (
-              <Reveal key={step.number} delay={i * 80}>
-                <li className="h-full bg-stone p-9">
+              // The <li> stays a direct child of the <ol> — a wrapping <div>
+              // here breaks the list semantics screen readers rely on.
+              <li key={step.number} className="bg-stone">
+                <Reveal delay={i * 80} className="h-full p-9">
                   <span
                     className={`font-mono text-5xl ${ACCENT_NUMBER[i % 3]}`}
                     aria-hidden="true"
@@ -335,8 +337,8 @@ export function Process() {
                   <p className="mt-4 text-[15px] leading-relaxed text-graphiteSoft">
                     {step.description}
                   </p>
-                </li>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
           </ol>
         </div>

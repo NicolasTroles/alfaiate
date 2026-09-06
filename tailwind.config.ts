@@ -15,7 +15,10 @@ const config: Config = {
         elevated: '#182238',
         line: '#28334A', // dividers on dark
         silver: '#AAB4C6', // secondary text on dark
-        muted: '#6C7890',
+        // Fine print on dark. Kept at AA (4.5:1) against both `ink` and the
+        // lighter `surface` it also sits on — #6C7890 read as 4.3:1 on ink and
+        // failed Lighthouse, so do not darken this back down.
+        muted: '#7E8AA3',
         bone: '#F2F4F8', // primary text on dark (cool near-white)
 
         /* Light family: carries most of the page. Clean and neutral-cool. */

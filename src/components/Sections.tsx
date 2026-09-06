@@ -7,6 +7,7 @@ import {
   Microwave,
   MessageSquare,
   Minus,
+  Newspaper,
   Search,
   ShieldCheck,
   Tv,
@@ -15,7 +16,7 @@ import {
 import Button from '@/components/Button';
 import Photo from '@/components/Photo';
 import Reveal from '@/components/Reveal';
-import { differentials, primaryContact, services, site } from '@/config/site.config';
+import { differentials, press, primaryContact, services, site } from '@/config/site.config';
 
 /**
  * Every section on the white part of the page. They share one structural
@@ -68,20 +69,38 @@ export function Positioning() {
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-6">
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.03em] text-navy">
-            Não somos loja.
-            <span className="mt-1 block text-signal">Somos bancada.</span>
+            Quase 15 anos em {site.city}
+            <span className="mt-1 block text-signal">consertando, não vendendo.</span>
           </h2>
           <p className="mt-7 max-w-prose text-lg leading-relaxed text-ink">
-            A {site.brandFull} existe para consertar o aparelho que você já tem. Ninguém aqui
-            trabalha vendendo televisor novo — o trabalho é abrir, testar, encontrar a causa do
-            defeito e devolver o equipamento funcionando. A bancada fica no Água Verde, em{' '}
-            {site.city}.
+            A {site.brandFull} atende há {site.yearsInBusiness} em {site.city}, com loja no Água
+            Verde. Nesse tempo todo o trabalho foi sempre o mesmo: abrir, testar, encontrar a
+            causa do defeito e devolver o aparelho funcionando — nunca vender um novo no lugar.
           </p>
           <p className="mt-4 max-w-prose leading-relaxed text-inkMute">
             É por isso que a primeira coisa que fazemos é diagnosticar, e a segunda é te contar
             exatamente o que encontramos. Inclusive quando a conclusão é que o conserto não vale
             a pena.
           </p>
+
+          {/* The three credentials that are actually confirmed. No "milhares
+              de clientes", no award, no certification — only the years, the
+              Google rating with its count, and the fact there is a real
+              address you can walk into. */}
+          <dl className="mt-9 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-3">
+            {[
+              { term: 'No mercado', value: site.yearsInBusiness },
+              { term: 'Google', value: `${site.googleRating} · ${site.googleReviewCount} avaliações` },
+              { term: 'Loja física', value: `${site.address.district}, ${site.city}` },
+            ].map((stat) => (
+              <div key={stat.term} className="bg-white px-5 py-4">
+                <dt className="hud text-inkMute">{stat.term}</dt>
+                <dd className="mt-1.5 font-display text-[15px] font-bold leading-snug text-navy">
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
 
           <div className="mt-9">
             <Button
@@ -166,10 +185,10 @@ export function Services() {
 
         <div className="mb-12 grid gap-8 lg:grid-cols-12">
           <h2 className="font-display text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em] text-navy lg:col-span-6">
-            O que entra na bancada.
+            O que a gente conserta.
           </h2>
           <p className="max-w-prose leading-relaxed text-inkMute lg:col-span-6 lg:pt-2">
-            Cada categoria abaixo lista os sintomas mais comuns que chegam aqui. Se o seu defeito
+            Cada categoria abaixo lista os sintomas mais comuns que chegam na loja. Se o seu defeito
             não estiver na lista, ele provavelmente ainda cabe — descreva no WhatsApp e a gente
             avalia.
           </p>
@@ -275,23 +294,26 @@ export function Services() {
 }
 
 /**
- * The bench itself. A photo slot (still a placeholder — the client has not
- * sent images) paired with the four things that are true of how the work is
- * done here. Nothing in this list is a claim that needs the client to
- * confirm a number.
+ * The store. A photo slot (still a placeholder — the client has not sent
+ * images) paired with the four things that are true of how the work is done
+ * here, plus press coverage when there is any to show.
+ *
+ * The press block renders only if `press` has entries. It is empty until the
+ * client supplies an outlet, a date and a headline — "saiu no jornal" is a
+ * credential, and a credential with no source is not one.
  */
-export function Bench() {
+export function Store() {
   return (
-    <section id="bancada" className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-28">
-      <SectionMarker code="03" label="A bancada" />
+    <section id="loja" className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-28">
+      <SectionMarker code="03" label="A loja" />
 
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-5">
           <div className="overflow-hidden rounded-card">
             <Photo
-              alt="Bancada de assistência técnica da TV System com um televisor aberto em manutenção"
-              placeholderLabel="Aqui entra uma foto real da bancada, com um aparelho aberto em manutenção."
-              prompt="Photograph of a professional electronics repair workbench, a large flat-screen TV opened face-down with its back panel removed, exposed circuit boards and ribbon cables, a soldering iron and a multimeter resting beside it, technician's hands in the frame holding a probe. Clean, organised, modern workshop. Cool deep-navy ambient light (#001F4F) with technical blue accents (#005899) and a single warm amber highlight (#FDA201) from a task lamp. Sharp focus on the board, shallow depth of field, editorial product-photography lighting, no text, no logos, no people's faces. 4:5 vertical framing."
+              alt="Interior da loja da TV System, com televisores em manutenção sobre a bancada de reparo"
+              placeholderLabel="Aqui entra uma foto real da loja — o balcão de atendimento ou a oficina com aparelhos em manutenção."
+              prompt="Photograph of the interior of a well-established electronics repair shop, seen from the customer side of the service counter: shelves of televisions and small appliances awaiting repair, an organised repair bench visible behind with a flat-screen TV opened face-down, exposed circuit boards, a soldering iron and a multimeter. The place looks lived-in and professional, like a business that has been on the same street for over a decade. Cool deep-navy ambient tone (#001F4F) with technical blue accents (#005899) and a single warm amber highlight (#FDA201) from a task lamp. Editorial documentary lighting, shallow depth of field, no text, no logos, no legible faces. 4:5 vertical framing."
               width={880}
               height={1100}
               sizes="(min-width: 1024px) 40vw, 100vw"
@@ -302,13 +324,13 @@ export function Bench() {
         <div className="lg:col-span-7">
           <Reveal>
             <h2 className="font-display text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em] text-navy">
-              Quem abre o aparelho é quem te explica.
+              Quase 15 anos, e a mesma regra: quem abre o aparelho é quem te explica.
             </h2>
             <p className="mt-6 max-w-prose text-lg leading-relaxed text-ink">
               A diferença entre uma assistência técnica e uma troca de peça no escuro está no
               método. Aqui o equipamento é testado ponto a ponto até a causa real aparecer — e o
               que for encontrado é explicado em português, sem termo inventado para justificar
-              valor.
+              valor. É o que mantém a loja aberta há quase 15 anos.
             </p>
           </Reveal>
 
@@ -328,6 +350,40 @@ export function Bench() {
               );
             })}
           </ul>
+
+          {press.length > 0 ? (
+            <Reveal className="mt-10">
+              <div className="rounded-card border border-line bg-panel p-7">
+                <p className="hud flex items-center gap-2 text-signal">
+                  <Newspaper aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.4} />
+                  Na imprensa
+                </p>
+                <ul className="mt-5 space-y-4">
+                  {press.map((mention) => (
+                    <li key={`${mention.outlet}-${mention.headline}`}>
+                      <p className="font-display text-[17px] font-bold leading-snug text-navy">
+                        {mention.url ? (
+                          <a
+                            href={mention.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-signal hover:underline"
+                          >
+                            {mention.headline}
+                          </a>
+                        ) : (
+                          mention.headline
+                        )}
+                      </p>
+                      <p className="hud mt-1.5 text-inkMute">
+                        {mention.outlet} · {mention.date}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ) : null}
         </div>
       </div>
     </section>

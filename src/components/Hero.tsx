@@ -48,7 +48,7 @@ export default function Hero() {
             <h1 className="max-w-[13ch] font-display text-[clamp(2.4rem,6.2vw,4.5rem)] font-bold leading-[0.94] tracking-[-0.03em] text-chalk">
               <span className="hud mb-5 flex items-center gap-2.5 font-normal tracking-hud text-amber">
                 <span aria-hidden="true" className="hidden h-px w-8 shrink-0 bg-amber sm:block" />
-                Assistência técnica especializada
+                Assistência técnica em {site.city} há {site.yearsInBusiness}
               </span>
               Diagnóstico antes do orçamento.
             </h1>
@@ -56,7 +56,8 @@ export default function Hero() {
             <p className="mt-6 max-w-prose text-[17px] leading-relaxed text-chalkMute sm:text-lg">
               Conserto de <strong className="font-semibold text-chalk">TVs LED, LCD e Smart TVs</strong>,
               micro-ondas, fornos elétricos, air fryers e lava-louças em {site.city}. A{' '}
-              {site.brandName} não vende aparelhos — abre, testa e conserta o seu.
+              {site.brandName} atende há {site.yearsInBusiness} e não vende aparelhos — abre,
+              testa e conserta o seu.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -95,8 +96,8 @@ export default function Hero() {
                 or warranty — only about how the bench works. */}
             <ul className="mt-7 grid max-w-xl gap-x-6 gap-y-3 sm:grid-cols-3">
               {[
+                `Loja física no ${site.address.district}`,
                 'Orçamento só após o diagnóstico',
-                'Reparo em nível de placa',
                 'Nada é consertado sem aprovação',
               ].map((fact) => (
                 <li key={fact} className="flex items-start gap-2.5 text-[13px] leading-snug text-chalkMute">

@@ -106,7 +106,7 @@ export function Contact() {
       label: 'Telefone',
       value: site.phone,
       description:
-        'O mesmo número atende por ligação, se você preferir falar com a bancada.',
+        'O mesmo número atende por ligação, se você preferir falar com um técnico.',
       href: phoneUrl,
       external: false,
     },

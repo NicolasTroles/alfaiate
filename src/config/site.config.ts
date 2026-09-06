@@ -7,8 +7,10 @@
  * brand identity — palette, positioning, the equipment categories — comes
  * from the client's brand brief.
  *
- * The client separately confirmed that the landline also answers on WhatsApp
- * Business — see the note on `whatsapp` below.
+ * The client separately confirmed (2026-09-06) that the landline also answers
+ * on WhatsApp Business — see the note on `whatsapp` below — that the company
+ * has been operating for close to 15 years, and that it has been covered by
+ * the press at least once.
  *
  * STILL UNCONFIRMED, and therefore absent from the copy: price, turnaround
  * time, warranty length, manufacturer authorization, and years in business.
@@ -18,9 +20,24 @@
 export const site = {
   brandName: 'TV System',
   brandFull: 'TV System Assistência Técnica',
-  // The positioning line the brief is explicit about: this is a repair bench,
-  // not a store that sells televisions.
-  tagline: 'Assistência técnica especializada em TVs, micro-ondas e eletrodomésticos.',
+  tagline:
+    'Assistência técnica com quase 15 anos em Curitiba, especializada em TVs, micro-ondas e eletrodomésticos.',
+
+  /**
+   * "Quase 15 anos", as the client put it — deliberately stored as the
+   * approximate figure they gave rather than a founding year, because no
+   * founding year was confirmed. Every place this appears in the copy says
+   * "quase 15 anos" or "há quase 15 anos"; nothing computes a date from it,
+   * and it is not published as schema.org foundingDate.
+   *
+   * The original brand brief's hard requirement still holds and has not been
+   * softened by this: the site must read as an assistência técnica, never as
+   * a shop that sells televisions. Longevity and a physical storefront are
+   * now the credibility argument; "we repair, we do not sell" is still the
+   * positioning argument, and the "o que fazemos / o que não fazemos" sheet
+   * still carries it.
+   */
+  yearsInBusiness: 'quase 15 anos',
 
   // Confirmed: the Google profile categorises the business as a television
   // repair service in Curitiba, Paraná.
@@ -97,12 +114,39 @@ export const site = {
   seo: {
     title: 'TV System | Assistência Técnica em TV e Eletrodomésticos em Curitiba',
     description:
-      'Assistência técnica em Curitiba: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Diagnóstico antes do orçamento e atendimento pelo WhatsApp.',
+      'Assistência técnica em Curitiba há quase 15 anos: conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos, air fryers e lava-louças. Loja no Água Verde, orçamento pelo WhatsApp.',
     // TODO: confirm with client — replace with the real domain after the
     // first deploy, then redeploy so canonical/OG URLs match production.
     url: 'https://tvsystem.com.br',
   },
 } as const;
+
+/**
+ * Press coverage.
+ *
+ * The client says the company has been in the newspaper, but gave no outlet,
+ * date, headline or link — and a press credential is exactly the kind of
+ * claim that must not be approximated. "Saiu no jornal" with no source is
+ * unverifiable puffery; naming a paper we were not told would be worse.
+ *
+ * So the list ships empty and the section that renders it (Store, in
+ * Sections.tsx) is skipped entirely while it is. Add one entry per mention
+ * and the section appears, with no other change.
+ */
+// TODO: confirm with client — outlet name, publication date, headline and a
+// link to the article (or a scan/photo of the page for `image`).
+export type PressMention = {
+  /** Newspaper / site name, e.g. 'Gazeta do Povo'. */
+  outlet: string;
+  /** Headline or a short description of the piece. */
+  headline: string;
+  /** Publication date as shown to readers, e.g. 'Março de 2019'. */
+  date: string;
+  /** Link to the article online. Omit if it was print-only. */
+  url?: string;
+};
+
+export const press: readonly PressMention[] = [];
 
 /**
  * The equipment categories from the brand brief, verbatim in scope: TVs LED,
@@ -199,7 +243,7 @@ export const diagnosticSteps = [
     code: '01',
     title: 'Recepção',
     description:
-      'Você descreve o defeito pelo WhatsApp ou traz o aparelho até a bancada. Registramos o equipamento, o modelo e o sintoma relatado.',
+      'Você descreve o defeito pelo WhatsApp ou traz o aparelho até a loja, no Água Verde. Registramos o equipamento, o modelo e o sintoma relatado.',
   },
   {
     code: '02',
@@ -260,7 +304,7 @@ export const faqs = [
   {
     question: 'A TV System vende televisores?',
     answer:
-      'Não. A TV System é uma assistência técnica: fazemos manutenção e conserto de aparelhos. Não somos uma loja e não vendemos televisores nem eletrodomésticos.',
+      'Não. A TV System é uma assistência técnica: temos loja física no Água Verde, mas o que fazemos é manutenção e conserto de aparelhos. Não vendemos televisores nem eletrodomésticos.',
   },
   {
     question: 'Quais aparelhos a TV System conserta?',
@@ -288,6 +332,11 @@ export const faqs = [
       'Chame no WhatsApp (41) 3092-4949 com o modelo do aparelho e uma descrição do defeito — fotos ou um vídeo curto do problema ajudam bastante no diagnóstico inicial. O mesmo número atende por ligação, e você também pode trazer o aparelho até a loja no Água Verde.',
   },
   {
+    question: 'Há quanto tempo a TV System funciona?',
+    answer:
+      'Há quase 15 anos atendendo em Curitiba, com loja física no Água Verde. São 125 avaliações no Google, com nota 4,5.',
+  },
+  {
     question: 'Onde fica a TV System?',
     answer:
       'Na R. Palmeiras, 273 — Água Verde, Curitiba/PR, CEP 80620-110. Atendemos de segunda a sexta das 09h às 18h e aos sábados das 09h às 12h.',
@@ -311,7 +360,7 @@ export const tickerItems = [
 export const navLinks = [
   { href: '#servicos', label: 'Serviços' },
   { href: '#diagnostico', label: 'Como funciona' },
-  { href: '#bancada', label: 'A bancada' },
+  { href: '#loja', label: 'A loja' },
   { href: '#duvidas', label: 'Dúvidas' },
   { href: '#contato', label: 'Contato' },
 ] as const;

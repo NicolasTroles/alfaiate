@@ -59,7 +59,7 @@ export function renderOgImage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
             <div style={{ width: 44, height: 3, background: '#FDA201' }} />
             <div style={{ color: '#FDA201', fontSize: 19, letterSpacing: 3 }}>
-              NÃO SOMOS LOJA. SOMOS BANCADA.
+              QUASE 15 ANOS EM CURITIBA
             </div>
           </div>
           <div

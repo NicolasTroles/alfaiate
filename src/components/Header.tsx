@@ -54,7 +54,7 @@ export default function Header() {
         <div className="mx-auto flex h-9 max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8">
           <p className="hud flex items-center gap-2 text-chalkMute">
             <span aria-hidden="true" className="h-1.5 w-1.5 animate-blink-dot rounded-full bg-amber" />
-            <span className="hidden sm:inline">Bancada aberta</span>
+            <span className="hidden sm:inline">Loja aberta</span>
             <span className="hidden text-chalk/40 sm:inline" aria-hidden="true">
               ·
             </span>

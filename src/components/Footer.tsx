@@ -15,7 +15,9 @@ export default function Footer() {
               {site.tagline} Conserto de TVs LED, LCD e Smart TVs, micro-ondas, fornos elétricos,
               air fryers e lava-louças em {site.city} e região.
             </p>
-            <p className="hud mt-6 text-chalk/45">Assistência técnica — não vendemos aparelhos</p>
+            <p className="hud mt-6 text-chalk/45">
+              Há {site.yearsInBusiness} em {site.city} — assistência técnica, não vendemos aparelhos
+            </p>
           </div>
 
           <nav aria-label="Rodapé" className="lg:col-span-3">

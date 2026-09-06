@@ -57,8 +57,15 @@ export function Header() {
           <Image
             src="/logo.png"
             alt={site.brandFull}
-            width={2172}
-            height={724}
+            // Display size, not the source file's 2172x724 — same 3:1 ratio, so
+            // the reserved box is identical. next/image derives its srcset from
+            // these numbers: at 2172 it asked for w=3840 and shipped the whole
+            // 43KB file to paint a 40px-tall mark, and since this is the LCP
+            // element those bytes sat on the critical path. At 144 it offers
+            // w=256/w=384 and the browser takes one of those. The rendered
+            // height still comes from the h-10/sm:h-12 classes below.
+            width={144}
+            height={48}
             priority
             className={`h-10 w-auto object-contain transition-[filter] duration-300 sm:h-12 ${
               solid ? '' : 'brightness-0 invert'

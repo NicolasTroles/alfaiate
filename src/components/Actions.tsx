@@ -1,84 +1,59 @@
-import { MessageCircle, Phone } from 'lucide-react';
-import { site, whatsappUrl } from '@/config/site.config';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { MessageSquare, Phone } from 'lucide-react';
+import { phoneUrl, site, whatsappUrl } from '@/config/site.config';
 
 /**
- * Contact buttons. All at a minimum height of 48px (min-h-12) to meet the
- * 44pt touch-target guideline on mobile.
+ * Fixed contact bar for phones — WhatsApp is how this kind of business
+ * actually gets contacted, so it stays one thumb-reach away for the whole
+ * page.
+ *
+ * It only appears after the hero has scrolled past: while the hero is on
+ * screen its own two buttons are already doing this job, and a duplicate bar
+ * over them would just eat screen. The bar is hidden from lg upward, where
+ * the header CTA is permanently visible instead.
+ *
+ * Both targets are 56px tall and the bar pads for the home indicator via
+ * env(safe-area-inset-bottom).
  */
+export default function Actions() {
+  const [visible, setVisible] = useState(false);
 
-const BASE =
-  'inline-flex min-h-12 items-center justify-center gap-2.5 px-7 text-[13px] label-caps transition-all duration-200 ease-smooth cursor-pointer';
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.7);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-/** Primary CTA. Amarelo energia — the brand's "ponto de ativação" color — on petrol text (8:1+). */
-export function WhatsAppButton({
-  className,
-  label = 'Falar no WhatsApp',
-}: {
-  className?: string;
-  label?: string;
-}) {
   return (
-    <a
-      href={whatsappUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`${BASE} bg-safety text-charcoal hover:bg-chalk active:scale-[0.98] ${className ?? ''}`}
+    <div
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-navyLine/70 bg-navyDeep/95 backdrop-blur-md transition-[transform,visibility] duration-300 ease-smooth lg:hidden ${
+        visible ? 'translate-y-0' : 'invisible translate-y-full'
+      }`}
+      // Hidden from assistive tech while off-screen, and `invisible` takes
+      // its two links out of the tab order — a bar sitting below the fold
+      // must not be focusable.
+      aria-hidden={!visible}
     >
-      <MessageCircle className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-      {label}
-    </a>
-  );
-}
-
-/** Secondary button. `tone` adapts the border/text to the section's background. */
-export function PhoneButton({
-  className,
-  tone = 'light',
-}: {
-  className?: string;
-  tone?: 'light' | 'dark';
-}) {
-  const colors =
-    tone === 'light'
-      ? 'border-floorLine text-ink hover:border-ink hover:bg-floorDeep'
-      : 'border-steelLine text-chalk hover:border-safety hover:bg-steel';
-  return (
-    <a
-      href={`tel:${site.phoneLink}`}
-      className={`${BASE} border ${colors} active:scale-[0.98] ${className ?? ''}`}
-    >
-      <Phone className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-      {site.phone}
-    </a>
-  );
-}
-
-/**
- * Fixed contact bar at the bottom, mobile only.
- * The spacer in page.tsx reserves space so it never covers the footer.
- */
-export function MobileContactBar() {
-  return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-steelLine bg-charcoal/95 backdrop-blur-sm md:hidden">
-      <div
-        className="flex gap-2 p-3"
-        style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
-      >
+      <div className="grid grid-cols-2 gap-2 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="label-caps flex min-h-12 flex-1 items-center justify-center gap-2 bg-safety text-[13px] text-charcoal active:scale-[0.98]"
+          className="flex min-h-[56px] items-center justify-center gap-2.5 rounded-card bg-amber font-sans text-[15px] font-semibold text-navy transition-colors active:bg-[#D68701]"
         >
-          <span aria-hidden="true">💬</span>
-          Falar no WhatsApp
+          <MessageSquare aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={2.2} />
+          Orçamento
         </a>
         <a
-          href={`tel:${site.phoneLink}`}
-          aria-label={`Ligar para ${site.phone}`}
-          className="grid min-h-12 w-14 place-items-center border border-steelLine text-chalk active:scale-[0.98]"
+          href={phoneUrl}
+          aria-label={`Ligar para ${site.brandFull} no ${site.phone}`}
+          className="flex min-h-[56px] items-center justify-center gap-2.5 rounded-card border border-chalk/25 font-sans text-[15px] font-semibold text-chalk transition-colors active:bg-chalk/10"
         >
-          <Phone className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+          <Phone aria-hidden="true" className="h-[18px] w-[18px]" strokeWidth={2.2} />
+          Ligar
         </a>
       </div>
     </div>

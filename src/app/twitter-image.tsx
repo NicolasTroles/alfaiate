@@ -1,8 +1,9 @@
-import { ogImageSize, renderOgImage } from '@/lib/ogImage';
+import { renderOgImage, OG_CONTENT_TYPE, OG_SIZE } from '@/lib/ogImage';
 
-export const size = ogImageSize;
-export const contentType = 'image/png';
+export const alt = 'TV System — assistência técnica em TV, micro-ondas e eletrodomésticos';
+export const size = OG_SIZE;
+export const contentType = OG_CONTENT_TYPE;
 
-export default async function Image() {
+export default function TwitterImage() {
   return renderOgImage();
 }

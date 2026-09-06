@@ -1,130 +1,274 @@
-'use client';
+import { ArrowRight, Clock, MapPin, MessageSquare, Phone, Plus } from 'lucide-react';
+import Button from '@/components/Button';
+import Reveal from '@/components/Reveal';
+import {
+  faqs,
+  mapsEmbedUrl,
+  mapsUrl,
+  phoneUrl,
+  site,
+  whatsappUrl,
+} from '@/config/site.config';
 
-import { ExternalLink, MapPin, Navigation, Phone } from 'lucide-react';
-import { mapsEmbedUrl, mapsUrl, site } from '@/config/site.config';
-import { WhatsAppButton } from './Actions';
-import { CircuitWatermark } from './Brand';
-import { Reveal } from './Reveal';
-
-/** Localização + contato — endereço confirmado pelo cliente, então o mapa real é seguro de mostrar. */
-export function Contact() {
+/**
+ * FAQ as native <details>/<summary>. No accordion state, no JavaScript, no
+ * ARIA to get wrong — the browser already ships a disclosure widget that is
+ * keyboard-accessible and announced correctly, and every answer stays in the
+ * DOM for crawlers whether or not it is open.
+ */
+export function Faq() {
   return (
-    <section id="contato" className="bg-floor text-ink">
-      <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
-        <div className="px-5 py-24 sm:px-8 sm:py-32 lg:pr-16">
-          <Reveal>
-            <p className="label-caps text-[10px] text-safetyDeep">Contato</p>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4.6vw,3.2rem)] font-bold leading-[1.08] tracking-tight text-ink">
-              Estamos em Curitiba.
-            </h2>
-            <p className="mt-6 max-w-prose text-[17px] leading-relaxed text-inkSoft">
-              Leve ou envie fotos do seu equipamento — a equipe da Activa avalia e retorna com o
-              diagnóstico.
-            </p>
-          </Reveal>
+    <section id="duvidas" className="bg-panel">
+      <div className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-28">
+        <div className="mb-10 flex items-center gap-4 border-b border-line pb-4 sm:mb-14">
+          <span className="hud rounded-[6px] bg-navy px-2 py-1.5 text-chalk">04</span>
+          <span className="hud text-inkMute">Dúvidas frequentes</span>
+          <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-amber" />
+        </div>
 
-          <Reveal delay={100}>
-            <div className="mt-12 space-y-8">
-              <div className="flex gap-5">
-                <MapPin
-                  className="mt-0.5 h-5 w-5 shrink-0 text-safetyDeep"
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                />
-                <div>
-                  <h3 className="label-caps text-[10px] text-inkSoft">Endereço</h3>
-                  <address className="mt-3 not-italic leading-relaxed text-ink">
-                    {site.address.street}
-                    <br />
-                    {site.address.city} — {site.address.state}
-                  </address>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <h2 className="font-display text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em] text-navy">
+              Perguntas que a gente ouve todo dia.
+            </h2>
+            <p className="mt-5 max-w-prose leading-relaxed text-inkMute">
+              Se a sua não estiver aqui, é só perguntar direto no WhatsApp.
+            </p>
+            <div className="mt-8">
+              <Button
+                href={whatsappUrl}
+                external
+                variant="outlineLight"
+                icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
+              >
+                Perguntar no WhatsApp
+              </Button>
+            </div>
+          </div>
+
+          <ul className="lg:col-span-8">
+            {faqs.map((faq, index) => (
+              <Reveal as="li" key={faq.question} delay={Math.min(index, 5) * 60}>
+                <details className="group border-b border-line">
+                  <summary className="flex min-h-[64px] cursor-pointer list-none items-center justify-between gap-6 py-5 text-left">
+                    <h3 className="font-display text-[17px] font-semibold leading-snug text-navy transition-colors group-hover:text-signal sm:text-lg">
+                      {faq.question}
+                    </h3>
+                    <span
+                      aria-hidden="true"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-signal transition-transform duration-300 ease-smooth group-open:rotate-45"
+                    >
+                      <Plus className="h-4 w-4" strokeWidth={2.2} />
+                    </span>
+                  </summary>
+                  <p className="max-w-prose pb-6 leading-relaxed text-inkMute">{faq.answer}</p>
+                </details>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Contact. Three channels, then the location.
+ *
+ * The map is only embedded once `site.addressConfirmed` is true: an embed
+ * built from a placeholder query would drop a pin on some unrelated business,
+ * which is a worse failure than an honest empty state.
+ */
+export function Contact() {
+  const channels = [
+    {
+      icon: MessageSquare,
+      label: 'WhatsApp',
+      value: site.phone,
+      description: 'O canal mais rápido. Mande o modelo e o defeito.',
+      href: whatsappUrl,
+      external: true,
+    },
+    {
+      icon: Phone,
+      label: 'Telefone',
+      value: site.phone,
+      description: 'Falar direto com a bancada durante o horário de atendimento.',
+      href: phoneUrl,
+      external: false,
+    },
+    {
+      icon: Clock,
+      label: 'Atendimento',
+      value: site.openingHours,
+      description: 'Entradas e retiradas de equipamento dentro desse horário.',
+      href: null,
+      external: false,
+      // Full sentence rather than a phone number: set at body size so it
+      // doesn't wrap mid-phrase at display weight.
+      compact: true,
+    },
+  ];
+
+  return (
+    <section id="contato" className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-28">
+      <div className="mb-10 flex items-center gap-4 border-b border-line pb-4 sm:mb-14">
+        <span className="hud rounded-[6px] bg-navy px-2 py-1.5 text-chalk">05</span>
+        <span className="hud text-inkMute">Contato</span>
+        <span aria-hidden="true" className="ml-auto h-1.5 w-1.5 rounded-full bg-amber" />
+      </div>
+
+      <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <h2 className="font-display text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.03em] text-navy">
+            Traga o defeito. A gente encontra a causa.
+          </h2>
+          <p className="mt-6 max-w-prose text-lg leading-relaxed text-ink">
+            Descreva o que está acontecendo com o aparelho — modelo, marca e o que ele faz (ou
+            deixou de fazer). Fotos e um vídeo curto do problema ajudam bastante no diagnóstico
+            inicial.
+          </p>
+
+          <ul className="mt-10 space-y-px overflow-hidden rounded-card border border-line bg-line">
+            {channels.map((channel) => {
+              const Icon = channel.icon;
+              const content = (
+                <div className="flex gap-4 bg-white p-6 transition-colors duration-200 group-hover:bg-panel">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-signal/10 text-signal">
+                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="hud text-inkMute">{channel.label}</p>
+                    <p
+                      className={`mt-1.5 font-display font-bold text-navy ${
+                        'compact' in channel ? 'text-[15px] leading-snug' : 'text-lg'
+                      }`}
+                    >
+                      {channel.value}
+                    </p>
+                    <p className="mt-1 text-sm leading-snug text-inkMute">{channel.description}</p>
+                  </div>
+                </div>
+              );
+
+              return (
+                <li key={channel.label} className="group">
+                  {channel.href ? (
+                    <a
+                      href={channel.href}
+                      {...(channel.external
+                        ? { target: '_blank', rel: 'noopener noreferrer' }
+                        : {})}
+                      className="block"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    content
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="lg:col-span-7">
+          <div className="flex h-full flex-col gap-6">
+            <div className="flex items-start gap-4 rounded-card border border-line bg-panel p-6">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-navy text-amber">
+                <MapPin aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+              </span>
+              <div>
+                <p className="hud text-inkMute">Endereço</p>
+                <address className="mt-1.5 not-italic leading-relaxed text-ink">
+                  {site.address.street}
+                  <br />
+                  {site.address.district} — {site.address.city}/{site.address.state}
+                </address>
+                {site.addressConfirmed ? (
                   <a
                     href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="label-caps mt-4 inline-flex min-h-11 items-center gap-2 text-[11px] text-safetyDeep underline decoration-floorLine underline-offset-[6px] transition-colors hover:decoration-safetyDeep"
+                    className="mt-3 inline-flex min-h-[44px] items-center gap-2 text-sm font-semibold text-signal hover:underline"
                   >
-                    <Navigation className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                    Como chegar
+                    Abrir no Google Maps
+                    <ArrowRight aria-hidden="true" className="h-4 w-4" strokeWidth={2.4} />
                   </a>
-                </div>
+                ) : null}
               </div>
+            </div>
 
-              <div className="flex gap-5">
-                <Phone
-                  className="mt-0.5 h-5 w-5 shrink-0 text-safetyDeep"
-                  strokeWidth={1.5}
-                  aria-hidden="true"
+            {site.addressConfirmed ? (
+              <div className="overflow-hidden rounded-card border border-line">
+                <iframe
+                  src={mapsEmbedUrl}
+                  title={`Localização da ${site.brandFull} no mapa`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="block h-[380px] w-full lg:h-full lg:min-h-[420px]"
                 />
-                <div>
-                  <h3 className="label-caps text-[10px] text-inkSoft">Telefone</h3>
-                  <a
-                    href={`tel:${site.phoneLink}`}
-                    className="mt-3 inline-flex min-h-11 items-center font-display text-2xl font-bold text-ink transition-colors hover:text-safetyDeep"
-                  >
-                    {site.phone}
-                  </a>
-                </div>
               </div>
-
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 border border-floorLine px-5 py-4 transition-colors hover:border-ink"
-              >
-                <span className="font-display text-2xl font-bold text-ink">
-                  {site.googleRating}
-                  <span className="ml-1 text-safetyDeep">★</span>
-                </span>
-                <span className="label-caps text-[10px] text-inkSoft">
-                  Google
-                  <ExternalLink
-                    className="ml-1 inline h-3 w-3 transition-transform group-hover:translate-x-0.5"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
-                </span>
-              </a>
-            </div>
-          </Reveal>
-
-          <Reveal delay={200}>
-            <div className="mt-12">
-              <WhatsAppButton label="Falar pelo WhatsApp" className="w-full sm:w-auto" />
-            </div>
-          </Reveal>
-        </div>
-
-        <div className="relative min-h-[24rem] border-t border-floorLine lg:min-h-full lg:border-l lg:border-t-0">
-          <iframe
-            src={mapsEmbedUrl}
-            title={`Mapa: ${site.brandFull}, ${site.address.street}`}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full"
-            style={{ filter: 'grayscale(0.35) contrast(1.02)' }}
-          />
+            ) : (
+              /* TODO: remove this branch once site.addressConfirmed is true. */
+              <div className="pixel-grid flex flex-1 flex-col items-center justify-center gap-3 rounded-card border border-dashed border-signal/35 bg-panel p-10 text-center">
+                <MapPin aria-hidden="true" className="h-6 w-6 text-signal" strokeWidth={1.8} />
+                <p className="hud text-signal">Mapa pendente</p>
+                <p className="max-w-sm text-sm leading-relaxed text-inkMute">
+                  O mapa aparece aqui assim que o endereço definitivo da {site.brandName} for
+                  confirmado.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+    </section>
+  );
+}
 
-      {/* Closing band — pure black, the brand's documented "alto contraste" application. */}
-      <div className="relative overflow-hidden bg-void py-20 text-chalk sm:py-28">
-        <div className="pointer-events-none absolute -bottom-16 -right-16 opacity-[0.06]" aria-hidden="true">
-          <CircuitWatermark className="h-80 w-auto text-chalk" />
-        </div>
-        <div className="relative mx-auto max-w-2xl px-5 text-center sm:px-8">
-          <Reveal>
-            <h2 className="font-display text-[clamp(1.9rem,4.4vw,2.9rem)] font-bold leading-[1.1] tracking-tight text-chalk">
-              Seu equipamento parou? Vamos descobrir o problema.
+/**
+ * The closing CTA. The last navy block on the page, and the only place where
+ * the amber button sits alone with nothing competing for attention.
+ */
+export function CtaBand() {
+  return (
+    <section className="on-navy relative overflow-hidden bg-navy">
+      <div aria-hidden="true" className="pixel-grid-dark absolute inset-0" />
+      <div aria-hidden="true" className="scanlines absolute inset-0 opacity-25" />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber to-transparent"
+      />
+
+      <div className="relative mx-auto max-w-[1400px] px-5 py-24 sm:px-8 sm:py-32">
+        <div className="grid items-end gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <p className="hud flex items-center gap-2.5 text-amber">
+              <span aria-hidden="true" className="h-px w-8 bg-amber" />
+              Próximo passo
+            </p>
+            <h2 className="mt-6 max-w-[14ch] font-display text-[clamp(2.2rem,6vw,4.5rem)] font-bold leading-[0.96] tracking-[-0.03em] text-chalk">
+              Descreva o defeito. A gente responde.
             </h2>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="mt-8 flex justify-center">
-              <WhatsAppButton className="px-10 text-[14px]" />
-            </div>
-          </Reveal>
+            <p className="mt-6 max-w-prose text-lg leading-relaxed text-chalkMute">
+              Sem compromisso e sem orçamento no escuro — primeiro entendemos o que está
+              acontecendo, depois falamos de conserto.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
+            <Button
+              href={whatsappUrl}
+              external
+              icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
+            >
+              Solicitar orçamento
+            </Button>
+            <Button href={phoneUrl} variant="outlineDark">
+              Ligar agora
+            </Button>
+          </div>
         </div>
       </div>
     </section>

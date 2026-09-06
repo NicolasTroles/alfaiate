@@ -1,129 +1,180 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
-import { site, whatsappUrl } from '@/config/site.config';
-
-const LINKS = [
-  { href: '#services', label: 'Serviços' },
-  { href: '#faq', label: 'Dúvidas' },
-  { href: '#contato', label: 'Contato' },
-];
+import { ArrowRight, Menu, Phone, X } from 'lucide-react';
+import Brand from '@/components/Brand';
+import Button from '@/components/Button';
+import { navLinks, phoneUrl, site, whatsappUrl } from '@/config/site.config';
 
 /**
- * Transparent over the hero, solid once scrolled: the header starts with no
- * fill at all so the dark full-bleed hero photo (public/reparo.png) shows
- * straight through, with the nav text/logo flipped to light so they stay
- * legible against it. Past a small scroll threshold it switches to the
- * frosted light bar (and the logo/text flip back to their normal petrol
- * colors) since every section below the hero is light. `logo.png` itself is
- * petrol+amber on transparent, so the "light" logo is the same file forced
- * white via a CSS filter rather than a second exported asset.
+ * Two stacked bars, borrowed from the on-screen status line of a service
+ * menu: a thin navy strip carrying hours and phone, and the navigation
+ * itself on white.
+ *
+ * The strip is only there at the top of the page. Once you scroll it slides
+ * away and the nav bar tightens and picks up a border — the header ends up
+ * smaller the further down you are, which is the opposite of the usual
+ * "header grows a shadow" move and keeps more of the page visible.
  */
-export function Header() {
-  const [open, setOpen] = useState(false);
+export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const solid = scrolled || open;
+  // The mobile panel covers the page, so background scrolling is frozen while
+  // it is open and Escape closes it.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [menuOpen]);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
-        solid
-          ? 'border-floorLine/60 bg-floor/60 backdrop-blur-md'
-          : 'border-transparent bg-transparent'
-      }`}
-    >
-      <nav
-        className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6 px-5 py-2 sm:px-8"
-        aria-label="Navegação principal"
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/* Status strip — hidden once scrolling starts. */}
+      <div
+        className={`on-navy overflow-hidden bg-navy transition-[height,opacity] duration-300 ease-smooth ${
+          scrolled ? 'h-0 opacity-0' : 'h-9 opacity-100'
+        }`}
       >
-        <a href="#top" aria-label="Início" className="inline-flex shrink-0 items-center">
-          <Image
-            src="/logo.png"
-            alt={site.brandFull}
-            width={2172}
-            height={724}
-            priority
-            className={`h-10 w-auto object-contain transition-[filter] duration-300 sm:h-12 ${
-              solid ? '' : 'brightness-0 invert'
-            }`}
-          />
-        </a>
-
-        <ul className="hidden items-center gap-9 lg:flex">
-          {LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className={`label-caps text-[11px] transition-colors duration-200 ${
-                  solid ? 'text-ink hover:text-safetyDeep' : 'text-chalk hover:text-safety'
-                }`}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="label-caps hidden min-h-11 items-center bg-safety px-6 text-[11px] text-charcoal transition-colors duration-200 hover:bg-charcoal hover:text-safety lg:inline-flex"
-        >
-          Solicitar orçamento
-        </a>
-
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className={`grid h-11 w-11 place-items-center transition-colors duration-200 lg:hidden ${
-            solid ? 'text-ink' : 'text-chalk'
-          }`}
-          aria-label={open ? 'Fechar menu' : 'Abrir menu'}
-          aria-expanded={open}
-        >
-          {open ? (
-            <X className="h-6 w-6" strokeWidth={1.5} />
-          ) : (
-            <Menu className="h-6 w-6" strokeWidth={1.5} />
-          )}
-        </button>
-      </nav>
-
-      {open && (
-        <div className="border-t border-floorLine bg-floor lg:hidden">
-          <ul className="mx-auto max-w-7xl px-5 py-4 sm:px-8">
-            {LINKS.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="label-caps flex min-h-12 items-center text-xs text-ink"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <div className="mx-auto flex h-9 max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8">
+          <p className="hud flex items-center gap-2 text-chalkMute">
+            <span aria-hidden="true" className="h-1.5 w-1.5 animate-blink-dot rounded-full bg-amber" />
+            <span className="hidden sm:inline">Bancada aberta</span>
+            <span className="hidden text-chalk/40 sm:inline" aria-hidden="true">
+              ·
+            </span>
+            <span className="normal-case tracking-normal">{site.openingHours}</span>
+          </p>
+          <a
+            href={phoneUrl}
+            className="hud hidden items-center gap-1.5 text-chalk transition-colors hover:text-amber sm:flex"
+          >
+            <Phone aria-hidden="true" className="h-3 w-3" strokeWidth={2.2} />
+            <span className="tracking-normal">{site.phone}</span>
+          </a>
         </div>
-      )}
+      </div>
+
+      {/* Navigation. */}
+      <div
+        className={`border-b bg-white/95 backdrop-blur-md transition-[border-color,height] duration-300 ease-smooth ${
+          scrolled ? 'border-line' : 'border-transparent'
+        }`}
+      >
+        <div
+          className={`mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 transition-[height] duration-300 ease-smooth sm:px-8 ${
+            scrolled ? 'h-16' : 'h-[4.5rem]'
+          }`}
+        >
+          <a href="#topo" className="shrink-0 rounded-sm" aria-label="TV System — início">
+            <Brand />
+          </a>
+
+          <nav aria-label="Navegação principal" className="hidden lg:block">
+            <ul className="flex items-center gap-1">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="inline-flex min-h-[44px] items-center rounded-sm px-3.5 text-[15px] font-medium text-ink transition-colors duration-200 hover:text-signal"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Button
+              href={whatsappUrl}
+              external
+              icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
+              className="hidden sm:inline-flex"
+            >
+              Solicitar orçamento
+            </Button>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Abrir menu"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              className="inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-card border border-line text-navy transition-colors hover:bg-panel lg:hidden"
+            >
+              <Menu aria-hidden="true" className="h-5 w-5" strokeWidth={2.2} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile panel. */}
+      <div
+        id="mobile-menu"
+        hidden={!menuOpen}
+        className="on-navy fixed inset-0 z-50 bg-navy lg:hidden"
+      >
+        <div className="pixel-grid-dark absolute inset-0" aria-hidden="true" />
+        <div className="relative flex h-full flex-col">
+          <div className="flex h-[4.5rem] items-center justify-between px-5">
+            <Brand variant="dark" />
+            <button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Fechar menu"
+              className="inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-card border border-chalk/25 text-chalk transition-colors hover:bg-chalk/10"
+            >
+              <X aria-hidden="true" className="h-5 w-5" strokeWidth={2.2} />
+            </button>
+          </div>
+
+          <nav aria-label="Navegação principal" className="flex-1 overflow-y-auto px-5 pt-6">
+            <ul className="flex flex-col">
+              {navLinks.map((link, index) => (
+                <li key={link.href} className="border-b border-navyLine/60">
+                  <a
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex min-h-[64px] items-center gap-4 text-2xl font-semibold text-chalk transition-colors hover:text-amber"
+                  >
+                    <span className="hud text-amber">{String(index + 1).padStart(2, '0')}</span>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="space-y-3 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6">
+            <Button
+              href={whatsappUrl}
+              external
+              icon={<ArrowRight className="h-4 w-4" strokeWidth={2.4} />}
+              className="w-full"
+            >
+              Solicitar orçamento
+            </Button>
+            <Button href={phoneUrl} variant="outlineDark" className="w-full">
+              Ligar {site.phone}
+            </Button>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

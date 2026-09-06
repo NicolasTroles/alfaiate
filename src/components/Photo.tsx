@@ -2,192 +2,120 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Camera, Check, Copy } from 'lucide-react';
+import { Copy, Check, ImageIcon } from 'lucide-react';
 
-export type PhotoProps = {
-  /** Path from /public. E.g. '/photos/hero.jpg'. */
+/**
+ * One component, two states.
+ *
+ * With `src` filled it renders a normal next/image. With `src` empty — or
+ * when the file fails to load — it renders itself as the placeholder, at the
+ * exact aspect ratio the real photo will occupy, so dropping the photo in
+ * later shifts nothing on the page.
+ *
+ * The placeholder carries a ready-to-run generation prompt for whoever is
+ * producing the missing image. That prompt is written in English on purpose:
+ * it is an instruction for an image model, not site copy, and English is
+ * where those models behave best. Every prompt names this project's palette
+ * so generated images arrive already matching the site.
+ *
+ * The prompt lives in a <details>, not a hover tooltip, so it is reachable by
+ * keyboard and on touch.
+ */
+type PhotoProps = {
+  /** Path from /public. Leave empty until the real photo exists. */
   src?: string;
-  /** Alt text. Required and descriptive: screen readers depend on it. */
   alt: string;
-  /** Visible placeholder instruction, in Portuguese, describing the real photo that goes here. */
-  guide: string;
-  /**
-   * Ready-to-use prompt in English for an AI image generator (Midjourney,
-   * DALL-E, Google Nano Banana, etc.) — English because it's the language
-   * that gives the best results in these tools, not site content.
-   */
-  aiPrompt: string;
-  /** Frame aspect ratio. Reserving space avoids layout shift (CLS). */
-  aspect?: 'portrait' | 'landscape' | 'square' | 'tall';
-  /** Set true only on the hero photo, so it loads first. */
+  /** Shown in the placeholder — what this slot is waiting for, in Portuguese. */
+  placeholderLabel: string;
+  /** English generation prompt for an image model. */
+  prompt: string;
+  width: number;
+  height: number;
   priority?: boolean;
-  /** Background the frame sits on, so the placeholder stays legible. */
-  tone?: 'dark' | 'light';
-  /** Which part of the photo to keep when the crop cuts in (object-cover). */
-  focus?: 'center' | 'top' | 'left' | 'right';
-  /**
-   * 'frame' (default) is a self-contained card, with the notice centered.
-   * 'backdrop' is for a background photo sitting behind other content (hero,
-   * parallax bands) — the notice becomes a small corner badge instead, so it
-   * doesn't fight the text on top of it.
-   */
-  variant?: 'frame' | 'backdrop';
-  className?: string;
   sizes?: string;
+  className?: string;
 };
 
-const ASPECTS = {
-  portrait: 'aspect-[3/4]',
-  landscape: 'aspect-[16/10]',
-  square: 'aspect-square',
-  tall: 'aspect-[2/3]',
-} as const;
-
-const POSITION = {
-  center: 'object-center',
-  top: 'object-top',
-  left: 'object-left',
-  right: 'object-right',
-} as const;
-
-function CopyPromptButton({ prompt, light }: { prompt: string; light: boolean }) {
-  const [copied, setCopied] = useState(false);
-
-  return (
-    <button
-      type="button"
-      onClick={async () => {
-        await navigator.clipboard.writeText(prompt);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }}
-      className={`label-caps mt-3 inline-flex min-h-9 items-center gap-1.5 px-3 text-[11px] ${
-        light
-          ? 'border border-floorLine text-safetyDeep hover:bg-floorDeep'
-          : 'border border-steelLine text-safety hover:bg-steel'
-      }`}
-    >
-      {copied ? (
-        <>
-          <Check className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-          Copiado
-        </>
-      ) : (
-        <>
-          <Copy className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-          Copiar prompt
-        </>
-      )}
-    </button>
-  );
-}
-
-export function Photo({
+export default function Photo({
   src,
   alt,
-  guide,
-  aiPrompt,
-  aspect = 'portrait',
+  placeholderLabel,
+  prompt,
+  width,
+  height,
   priority = false,
-  tone = 'dark',
-  focus = 'center',
-  variant = 'frame',
-  className,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  sizes = '(min-width: 1024px) 50vw, 100vw',
+  className = '',
 }: PhotoProps) {
-  // If the file doesn't exist yet, fall back to the placeholder instead of
-  // the browser's broken-image icon.
   const [failed, setFailed] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const light = tone === 'light';
-  const background = light ? 'bg-floorDeep' : 'bg-steel';
-  const frame = `relative overflow-hidden ${background} ${ASPECTS[aspect]} ${className ?? ''}`;
-
-  if (!src || failed) {
-    if (variant === 'backdrop') {
-      return (
-        <div className={`${frame} ${light ? 'concrete-light' : 'concrete'}`}>
-          <div
-            className={`absolute bottom-5 right-5 max-w-[min(20rem,80%)] rounded-md border px-4 py-3 text-left backdrop-blur-sm ${
-              light
-                ? 'border-floorLine bg-floor/85 text-safetyDeep'
-                : 'border-steelLine bg-charcoal/75 text-mist'
-            }`}
-          >
-            <p className="label-caps flex items-center gap-2 text-[10px]">
-              <Camera className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden="true" />
-              {failed ? 'Arquivo não encontrado' : 'Foto aqui'}
-            </p>
-            <p className="mt-1.5 text-[11px] leading-relaxed">{guide}</p>
-            <details className="mt-2">
-              <summary
-                className={`label-caps cursor-pointer text-[10px] ${light ? 'text-safetyDeep' : 'text-safety'}`}
-              >
-                Prompt para gerar essa imagem
-              </summary>
-              <p className="mt-1.5 max-h-28 overflow-y-auto text-[10px] leading-relaxed">
-                {aiPrompt}
-              </p>
-              <CopyPromptButton prompt={aiPrompt} light={light} />
-            </details>
-          </div>
-        </div>
-      );
+  const copyPrompt = async () => {
+    try {
+      await navigator.clipboard.writeText(prompt);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard blocked (insecure context, permissions). The prompt is
+      // already on screen and selectable, so there is nothing to recover.
     }
+  };
 
+  if (src && !failed) {
     return (
-      <div
-        className={`${frame} ${light ? 'concrete-light border-floorLine' : 'concrete border-steelLine'} flex flex-col items-center justify-center border border-dashed`}
-      >
-        <div className="max-w-[88%] px-5 py-6 text-center">
-          <Camera
-            className={`mx-auto h-7 w-7 ${light ? 'text-safetyDeep' : 'text-mist'}`}
-            strokeWidth={1.5}
-            aria-hidden="true"
-          />
-          <p className={`label-caps mt-4 text-[10px] ${light ? 'text-safetyDeep' : 'text-mist'}`}>
-            {failed ? 'Arquivo não encontrado' : 'Foto aqui'}
-          </p>
-          <p className={`mt-2 text-sm leading-relaxed ${light ? 'text-safetyDeep' : 'text-chalk'}`}>
-            {guide}
-          </p>
-          {failed && src && (
-            <code
-              className={`mt-3 block break-all text-[11px] ${light ? 'text-safetyDeep' : 'text-safety'}`}
-            >
-              public{src}
-            </code>
-          )}
-
-          <details className="mt-4 text-left">
-            <summary
-              className={`label-caps cursor-pointer text-[11px] ${light ? 'text-safetyDeep' : 'text-safety'}`}
-            >
-              Prompt para gerar essa imagem
-            </summary>
-            <p
-              className={`mt-2 max-h-40 overflow-y-auto text-[11px] leading-relaxed ${light ? 'text-safetyDeep/80' : 'text-mist'}`}
-            >
-              {aiPrompt}
-            </p>
-            <CopyPromptButton prompt={aiPrompt} light={light} />
-          </details>
-        </div>
-      </div>
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        priority={priority}
+        sizes={sizes}
+        onError={() => setFailed(true)}
+        className={`h-full w-full object-cover ${className}`}
+      />
     );
   }
 
   return (
-    <div className={frame}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={sizes}
-        priority={priority}
-        onError={() => setFailed(true)}
-        className={`object-cover ${POSITION[focus]}`}
-      />
+    <div
+      style={{ aspectRatio: `${width} / ${height}` }}
+      className={`pixel-grid flex h-full w-full flex-col justify-center gap-6 rounded-card border border-dashed border-signal/35 bg-panel p-5 ${className}`}
+    >
+      <div className="flex items-start gap-3">
+        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-signal/10 text-signal">
+          <ImageIcon aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
+        </span>
+        <div>
+          <p className="hud text-signal">Foto pendente</p>
+          <p className="mt-1.5 text-sm leading-snug text-ink">{placeholderLabel}</p>
+        </div>
+      </div>
+
+      <details className="group mt-auto rounded-[10px] border border-line bg-white">
+        <summary className="hud flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-2 px-3.5 text-inkMute transition-colors hover:text-signal">
+          Prompt para gerar
+          <span aria-hidden="true" className="transition-transform group-open:rotate-45">
+            +
+          </span>
+        </summary>
+        <div className="border-t border-line p-3.5">
+          <p className="font-mono text-[11px] leading-relaxed text-inkMute" lang="en">
+            {prompt}
+          </p>
+          <button
+            type="button"
+            onClick={copyPrompt}
+            className="mt-3 inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-[8px] border border-line px-3 text-xs font-semibold text-navy transition-colors hover:bg-panel"
+          >
+            {copied ? (
+              <Check aria-hidden="true" className="h-3.5 w-3.5 text-signal" strokeWidth={2.4} />
+            ) : (
+              <Copy aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.2} />
+            )}
+            {copied ? 'Prompt copiado' : 'Copiar prompt'}
+          </button>
+        </div>
+      </details>
     </div>
   );
 }

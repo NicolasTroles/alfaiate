@@ -6,92 +6,98 @@ const config: Config = {
     extend: {
       colors: {
         /*
-         * Palette handed down by the client's brand guide — four fixed
-         * values, not a free choice:
-         *   Azul petróleo #0B2B3A — symbol, "ACTIVA" wordmark, institutional text
-         *   Amarelo energia #F4B41A — activation point, accents, highlights
-         *   Branco #FFFFFF — primary background, breathing room
-         *   Preto #000000 — monochrome / high-contrast applications
+         * TV System brand palette — handed down by the client's brand brief,
+         * not a free design choice. Every value below is one of the seven
+         * specified colors or an accessibility-driven variant of one, and the
+         * measured WCAG ratio is noted so nobody has to re-derive it:
          *
-         * The real logo (public/logo.png) is petrol + amber on a transparent/
-         * light ground, so it only reads on light backgrounds — that fixes
-         * white as the dominant field, not petrol. Petrol is reserved for
-         * text-on-white (matches "textos institucionais" in the brand table)
-         * and for the one or two darker, moodier sections (the technical-
-         * authority band, the mobile bar); pure black is kept for exactly one
-         * section — the closing CTA — as the deliberate "alto contraste"
-         * moment the brand table calls out, distinct from the everyday petrol
-         * dark tone.
+         *   #001F4F navy      institutional color, headings, dark sections
+         *   #005899 signal    gradients, secondary elements, icons, details
+         *   #0000FF beam      "small details only" per the brief
+         *   #FDA201 amber     CTAs, action icons, attention points
+         *   #FFFFFF white     dominant background
+         *   #F4F6F8 panel     alternate background
+         *   #1E293B ink       secondary body text
          *
-         * `charcoal`/`steel`/`chalk`/`mist` etc. keep the same names used
-         * across Photo/Reveal/Actions so those shared components need no
-         * changes — only the hex values move to this palette.
+         * The brief asks for strong navy/white contrast, so white is the
+         * dominant field and navy is spent deliberately: the hero, one pinned
+         * diagnostic section, the closing CTA and the footer. Amber is never
+         * a background for large areas — it marks actions and little
+         * technical ticks, which is what keeps the page from reading as a
+         * generic blue-gradient electronics shop.
          */
 
-        // Light family — carries most of the page.
-        floor: '#FFFFFF', // primary background (branco)
-        floorDeep: '#EEF3F5', // cards / alternate panels on white
-        floorLine: '#DCE6EA', // dividers on white
-        ink: '#0B2B3A', // primary text on white — azul petróleo, as specified
-        inkSoft: '#3F5D69', // secondary text on white (7.2:1)
+        // Dark family — navy carries every inverted surface.
+        navy: '#001F4F', // 16.04:1 with white
+        navyDeep: '#00163A', // footer / gradient floor, 17.86:1 with white
+        navyLine: '#12386B', // hairlines on navy (non-text, decorative only)
+        navySoft: '#0B2A5C', // raised cards on navy
 
-        // Dark family — petrol, used sparingly (authority section, mobile bar, header-on-scroll never needed since header sits on white).
-        charcoal: '#0B2B3A', // azul petróleo — dark section background
-        steel: '#123244', // cards / elevation on petrol
-        steelLine: '#28536A', // dividers on petrol
-        chalk: '#FFFFFF', // primary text on petrol / on black (branco)
-        mist: '#A9C0C9', // secondary text on petrol (7.6:1)
+        // Blue — gradients, icons, technical detail. Passes AA as text on
+        // white (7.35:1), so it can label as well as decorate.
+        signal: '#005899',
+        signalLine: '#CBDDEC', // 1px rules on white, tinted toward the blue
+        beam: '#0000FF', // pure blue: subpixel accents and hairline details only
 
-        // Single accent — amarelo energia. safetyDeep is the AA-on-white
-        // text variant (F4B41A fails contrast on white at ~1.9:1).
-        safety: '#F4B41A',
-        safetyDeep: '#7A5A0D',
+        // Amber — the single action color. FDA201 is 2.03:1 on white, so it
+        // is NEVER text on white; amberInk (5.93:1) is the on-white text
+        // variant. On navy, FDA201 reaches 7.9:1 and can be used as text.
+        amber: '#FDA201',
+        amberInk: '#8A5A00',
 
-        // Preto — reserved for the one high-contrast section (final CTA).
-        void: '#000000',
+        // Light family.
+        white: '#FFFFFF',
+        panel: '#F4F6F8',
+        line: '#E3E9EF', // hairlines on white
+        ink: '#1E293B', // body text, 14.63:1 on white
+        inkMute: '#54637A', // secondary text, 6.1:1 on white / 5.63:1 on panel
+        chalk: '#FFFFFF', // text on navy
+        chalkMute: '#A8BBD4', // secondary text on navy, 8.19:1
       },
       fontFamily: {
-        // Archivo: a bold, technical grotesk — engineering nameplate energy
-        // without the construction-signage cliché of a condensed face.
-        // Manrope: a clean geometric sans for body copy, legible and
-        // unfussy. Neither pairing has been used on a prior client site
-        // (Inter, Playfair Display, Space Grotesk, Oswald, DM Sans, IBM
-        // Plex Mono all already spoken for).
+        // Space Grotesk: a modern grotesk with engineered, slightly
+        // mechanical terminals — reads "technology" without a gradient in
+        // sight. IBM Plex Sans: engineering-heritage body face with solid
+        // Portuguese diacritics. IBM Plex Mono: technical annotations only
+        // (service codes, HUD labels), never body copy.
         display: ['var(--font-display)', 'Arial', 'sans-serif'],
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       letterSpacing: {
-        wide2: '0.14em',
+        hud: '0.18em',
       },
       maxWidth: {
-        prose: '62ch',
+        prose: '64ch',
+      },
+      borderRadius: {
+        // "Bordas levemente arredondadas" — a tight, consistent radius. No
+        // pill shapes, nothing softer than 14px anywhere.
+        card: '14px',
       },
       transitionTimingFunction: {
         smooth: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
-        'fade-up': {
-          from: { opacity: '0', transform: 'translate3d(0, 24px, 0)' },
-          to: { opacity: '1', transform: 'translate3d(0, 0, 0)' },
+        // A CRT-style horizontal wipe: content resolves top-to-bottom the way
+        // a scanline paints a frame. Used instead of the usual fade-up.
+        'scan-in': {
+          from: { opacity: '0', clipPath: 'inset(0 0 100% 0)' },
+          to: { opacity: '1', clipPath: 'inset(0 0 0 0)' },
         },
-        'draw-line': {
-          from: { transform: 'scaleX(0)' },
-          to: { transform: 'scaleX(1)' },
-        },
-        marquee: {
+        ticker: {
           from: { transform: 'translate3d(0, 0, 0)' },
           to: { transform: 'translate3d(-50%, 0, 0)' },
         },
-        pulse: {
+        'blink-dot': {
           '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.35' },
+          '50%': { opacity: '0.25' },
         },
       },
       animation: {
-        'fade-up': 'fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both',
-        'draw-line': 'draw-line 900ms cubic-bezier(0.22, 1, 0.36, 1) both',
-        marquee: 'marquee 26s linear infinite',
-        'pulse-slow': 'pulse 2.4s ease-in-out infinite',
+        'scan-in': 'scan-in 800ms cubic-bezier(0.22, 1, 0.36, 1) both',
+        ticker: 'ticker 38s linear infinite',
+        'blink-dot': 'blink-dot 2s ease-in-out infinite',
       },
     },
   },

@@ -9,57 +9,109 @@
 
   html {
     scroll-behavior: smooth;
-    /* Compensates the fixed header when jumping to an anchor. */
-    scroll-padding-top: 5.5rem;
+    /* Clears the fixed header when jumping to an anchor. */
+    scroll-padding-top: 6.5rem;
   }
 
   body {
-    /* The site is white-dominant; dark sections paint their own background. */
-    @apply bg-floor text-ink antialiased;
-    /* Avoids the horizontal scroll parallax/marquee can cause on narrow screens. */
+    /* White-dominant page; navy sections paint their own background. */
+    @apply bg-white font-sans text-ink antialiased;
+    /* The ticker and the pinned canvas can otherwise overflow on narrow screens. */
     overflow-x: hidden;
   }
 
   :focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid #005899;
     outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Navy surfaces need a focus ring that survives the dark ground. */
+  .on-navy :focus-visible {
+    outline-color: #fda201;
   }
 
   ::selection {
-    @apply bg-safety text-charcoal;
+    @apply bg-amber text-navy;
+  }
+}
+
+@layer components {
+  /*
+   * The HUD label: small uppercase mono used for service codes, section
+   * numbers and status lines. Borrowed from broadcast service menus, which
+   * is where the whole visual language of this site comes from.
+   */
+  .hud {
+    @apply font-mono text-[11px] uppercase tracking-hud;
   }
 }
 
 @layer utilities {
-  .label-caps {
-    @apply font-sans uppercase tracking-wide2;
+  /*
+   * The pixel grid: an LCD subpixel lattice rendered as a pure-CSS texture,
+   * used on flat surfaces where spinning up WebGL would be wasteful. Kept
+   * under 5% opacity so it registers as material, not decoration.
+   */
+  .pixel-grid {
+    background-image:
+      linear-gradient(90deg, rgba(0, 88, 153, 0.045) 1px, transparent 1px),
+      linear-gradient(rgba(0, 88, 153, 0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .pixel-grid-dark {
+    background-image:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
   }
 
   /*
-   * Faint circuit-board grid in pure CSS: a dot lattice with occasional
-   * crossing lines, standing in for a PCB via pattern — never rendered above
-   * ~6% opacity, so it reads as texture, not decoration.
+   * Scanline overlay for navy sections — 3px repeating darkening, the
+   * signature of a CRT photographed off-screen. Very low contrast on
+   * purpose; it should be felt more than seen.
    */
-  .circuit-grid {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      radial-gradient(rgba(255, 255, 255, 0.09) 1.5px, transparent 1.5px);
-    background-size:
-      64px 64px,
-      64px 64px,
-      64px 64px;
+  .scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.16) 0px,
+      rgba(0, 0, 0, 0.16) 1px,
+      transparent 1px,
+      transparent 3px
+    );
   }
 
-  .circuit-grid-light {
+  /* Corner brackets, like the framing marks in a viewfinder or service menu. */
+  .bracket-frame {
     background-image:
-      linear-gradient(rgba(11, 43, 58, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(11, 43, 58, 0.05) 1px, transparent 1px),
-      radial-gradient(rgba(11, 43, 58, 0.1) 1.5px, transparent 1.5px);
+      linear-gradient(to right, currentColor 2px, transparent 2px),
+      linear-gradient(to bottom, currentColor 2px, transparent 2px),
+      linear-gradient(to left, currentColor 2px, transparent 2px),
+      linear-gradient(to bottom, currentColor 2px, transparent 2px),
+      linear-gradient(to right, currentColor 2px, transparent 2px),
+      linear-gradient(to top, currentColor 2px, transparent 2px),
+      linear-gradient(to left, currentColor 2px, transparent 2px),
+      linear-gradient(to top, currentColor 2px, transparent 2px);
+    background-repeat: no-repeat;
     background-size:
-      64px 64px,
-      64px 64px,
-      64px 64px;
+      18px 2px,
+      2px 18px,
+      18px 2px,
+      2px 18px,
+      18px 2px,
+      2px 18px,
+      18px 2px,
+      2px 18px;
+    background-position:
+      left top,
+      left top,
+      right top,
+      right top,
+      left bottom,
+      left bottom,
+      right bottom,
+      right bottom;
   }
 }
 
